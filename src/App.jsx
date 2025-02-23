@@ -1,14 +1,19 @@
-import { useState } from 'react'
 import './App.css'
-import { Button } from './components/ui/button'
-function App() {
-  const [count, setCount] = useState(0)
+import { BrowserRouter } from 'react-router-dom';
 
+import { Router } from './Router';
+import { Navbar } from './pages/Navbar/Navbar';
+
+function App() {
   return (
-    <>
-      <h1>Oiii</h1>
-      <Button> Testando 1 2 3</Button>
-    </>
+    <BrowserRouter>
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <main className="container mx-auto py-6">
+          <Router />
+        </main>
+      </div>
+    </BrowserRouter>
   )
 }
 
