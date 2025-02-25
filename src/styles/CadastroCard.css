@@ -1,0 +1,438 @@
+small {
+    font-size: 15px;
+}
+
+h1 {
+    font-size: 25px;
+    font-weight: 700;
+}
+
+h2 {
+    font-weight: 600;
+    font-size: 20px;  
+    margin: 21px 0 13px 0;
+}
+
+.cadastro-page, .submit-trabalho-page {
+    display: flex;
+    justify-content: center;
+    padding: 38px 0px;
+    height: fit-content;
+}
+
+#regGrRfPage {
+    display: flex;
+    justify-content: center;
+    padding: 38px 0px;
+}
+
+.cadastro-card h1 {
+    margin-bottom: 21px;
+}  
+
+.cadastro-card .required {
+    display: inline;
+    color: #7B7979;
+}
+
+.field, .warning, .error {
+    display: flex;
+    align-items: center;
+}
+
+.error {
+    margin:  0 0 10px 0;
+}
+
+label {
+    margin: 0 0 -5px 9px;
+      margin-top: 0px;
+      margin-right: 0px;
+      margin-bottom: -5px;
+      margin-left: 9px;
+  }
+
+.submit-trabalho-page .field {
+    flex-direction: column;
+    align-items: start;
+}
+
+.submit-trabalho-page .cadastro-card input {
+    padding: 16px;
+}
+
+.field svg, .warning svg, .error svg {
+    position: absolute;
+    margin-left: 10px;
+}
+
+.field svg {
+    fill: #7B7979;
+}
+
+.warning svg {
+    fill: #FF8800;
+}
+
+.error svg {
+    fill: #921E1E;
+}
+
+.field input,
+select,
+textarea, .warning p, .error p {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    height: 56px;
+    width: 100%;
+    border-radius: 13px;
+    border: none;
+    font-size: 18px;
+    padding: 16px 16px 16px 60px;
+}
+
+.field input,
+select,
+textarea {
+    background-color: #D6E7E9;
+    color: #7B7979;
+}
+
+.submit-trabalho-page input, textarea {
+    padding: 16px;
+    margin-top: 10px;
+}
+
+input::placeholder {
+    color: #7B7979;
+    font-style: Montserrat;
+  }
+
+input[type='file'] {
+    padding: 0 0 20px 0;
+}
+
+.warning p {
+    background-color: #f9d388;
+    color: #FF8800;
+}
+
+.error p {
+    background-color: #F0C7C7;
+    color: #921E1E;
+}
+
+.cadastro-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#image_preview_wr {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 300px;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 13px;
+    border: none;
+    margin: 11px 0px;
+    font-size: 18px;
+    padding: 35px 35px 16px 16px;
+    background-color: #D6E7E9;
+    color: #7B7979;
+    fill: #7B7979;
+}
+
+#image_preview_wr svg {
+    display: inline-block;
+}
+
+.field {
+    display: flex;
+    align-items: center;
+}
+
+.field svg {
+    position: absolute;
+    margin-left: 15px;
+    fill: #7B7979;  
+    width: 30px;
+    height: 30px;
+}
+
+#group {
+    height: 30px;
+    width: 30px;
+    margin-left: 15px;
+}
+
+.cadastro-card input,
+select,
+textarea {
+    display: block;
+    box-sizing: border-box;
+    height: 56px;
+    border-radius: 13px;
+    border: none;
+    margin: 11px 0px;
+    font-size: 18px;
+    padding: 16px 16px 16px 16px;
+    background-color: #EBEAEA;
+    color: #7B7979;
+    font-family: "Montserrat", sans-serif;
+}
+
+.cadastro-card input {
+    padding: 16px 16px 16px 60px;
+}
+
+.cadastro-card textarea {
+    width: 100%;
+    min-width: 100%;
+    min-height: 100px;
+    max-height: 300px;
+}
+
+.end-num {
+    display: flex;
+    align-items: flex-end;
+    margin: 11px 0;
+}
+
+#endereco-wrapper {  
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#endereco-wrapper label{
+    margin: 8px;
+}
+
+#endereco {
+    display: inline;
+    margin: 0px 2% 0px 0px;
+}
+
+#num-wrapper {  
+    display: flex;
+    flex-direction: column;
+}
+
+#num-wrapper label{
+    margin: 8px;
+}
+
+#numeroEnd {
+    display: inline;
+    width: 150px;
+    margin: 0px;
+    padding: 16px;
+}
+
+.cadastro-card .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+  
+.cadastro-card button,
+input::file-selector-button {
+    height: 56px;
+    font-size: 18px;
+    padding: 0px 10px;
+    border-radius: 13px;
+    border: none;
+    cursor: pointer;
+}
+
+
+button,
+input::file-selector-button {
+    color: #fff
+}
+
+.cancelar {
+    background-color: #7B7979;
+}
+
+.cadastrar,
+.green-btn,
+input::file-selector-button {
+    background-color: #7B7979;
+}
+
+.cadastrar:hover,
+.green-btn:hover,
+input::file-selector-button:hover {
+    background-color: #58797c;
+}
+
+fieldset .radio-container {
+    display: flex;
+    margin: 10px 0;  
+    align-items: center;
+    gap: 10px;  
+    margin: 7px 0 7px 0;
+}
+
+.radio-container label {
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+input[type=radio], input[type=checkbox] {
+    display: flex;
+    position: relative;  
+    width: 30px;
+    height: 30px;
+    margin: 0px;
+    padding: 0px;
+    opacity: 0;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.radio {
+    position: absolute;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background-color: #EBEAEA;
+    color: #7B7979;
+}
+
+.radio-container svg {
+    display: none;
+    position: absolute;
+    fill: #fff;
+}
+
+.radio-container .material-icons {
+    display: flex;
+    position: absolute;
+    width: 24px;
+    color: rgb(255, 255, 255);
+}
+
+.radio-container:hover input[type=radio] ~ .material-icons {
+    color: #eceaea;
+}
+
+.radio-container:hover input ~ .radio {
+    background-color: #eceaea;
+}
+
+.radio-container input:checked ~ .radio {
+    border: 1px solid #7B7979;
+    background-color: #7B7979;
+    box-shadow: none;
+}
+
+.radio-container input:checked ~ svg {
+    display: block;
+}
+
+@media (max-width: 480px) {
+    .cadastro-card {
+        padding: 36px 20px;
+        margin: 0px 20px;
+    }
+}
+
+.submit-trabalho-page textarea {
+    min-height: 250px;
+    min-width: 100%;
+    padding: 16px;
+}
+
+.integrantes-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px auto;
+}
+
+.integrante-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.inst-ano-wrapper, .errors-wrapper {
+    display: flex;
+    gap: 10px;  
+    align-items: flex-end;
+}
+
+.errors-wrapper {
+    margin-top: 10px;
+}
+
+.errors-wrapper .error, .errors-wrapper .error p {
+    margin: 0;
+}
+
+.inst-ano-wrapper {
+    margin-top: 10px;
+}
+
+.inst-field, .instituicao-error {
+    width: 100%;
+}
+
+.ano-error {
+    width: 245px;
+}
+
+#localizacao {
+    min-height: 100px;
+}
+
+.cartografia-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.img-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.error svg {
+    fill: #921E1E;
+}
+
+.error p {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    height: 56px;
+    width: 100%;
+    border-radius: 13px;
+    border: none;
+    font-size: 16px;
+    margin: 11px 0px;
+    padding: 16px 16px 16px 60px;
+    background-color: #F0C7C7;
+    color: #921E1E;
+}
+
+#image_preview_wr .delete_btn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: fit-content;
+    padding: 10px;
+}
+
+#image_preview_wr .delete_btn svg {
+    fill: #7B7979;
+}

@@ -1,0 +1,13 @@
+.card {  
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 25px;
+    padding: 36px 55px;
+    margin: 0px 20px;
+    max-width: 800px;
+    min-width: 300px;
+    width: 100%;
+    height: fit-content;
+    background-color: #F4F4F4;
+}

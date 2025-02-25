@@ -1,0 +1,104 @@
+.loginPage {
+    display: flex;
+    justify-content: center;
+    padding: 38px 0px;
+    height: calc(100vh - 147.5px - (var(--height-full) + 75px));
+    min-height: 514px;
+  }
+  
+  .LoginCard {
+    max-width: 530px;
+    width: fit-content;
+    height: fit-content;
+    background-color: #F4F4F4;
+    padding: 31px 62px;
+    border-radius: 25px;
+  }
+  
+  .LoginCard h2 {
+    text-align: start;
+    margin-bottom: 20px;
+    font-size: 25px;
+    color: #7B7979;
+  }
+  
+  .FormGroup {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 16px 16px 16px 60px;
+    border-radius: 10px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #D8D8D8;
+    border: none;
+    height: 50px;  
+    color: #7B7979;   
+  }
+  
+  .LoginButton {  
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    text-decoration: none;
+    background-color: #7B7979;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: background-color 0.3s, transform 0.3s;
+    overflow: hidden;
+  }
+  
+  
+  .ButtonWrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .InputWrapper svg {
+    position: absolute;
+    fill: #7B7979;
+    margin-left: 10px;
+    width: 30px;
+  }
+  
+  .InputWrapper {
+    display: flex;
+    height: 50px;
+    align-items: center;
+  }
+  
+  
+  @media (max-width: 768px) {
+    .LoginCard {
+      padding: 20px; 
+    }
+  }
+  
+  #forgot_passwd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 19px;
+    color: #7B7979;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  @media (max-width: 1000px) {
+    .loginPage {
+      height: calc(100vh - 147.5px - var(--height-small));
+      min-height: 514px;
+    }
+  }
+  
