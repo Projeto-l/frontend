@@ -108,7 +108,7 @@ const Login = () => {
   return (
     <div className="page">
       <div className="content">
-        <Header></Header>
+        <Header isHome={false}></Header>
         <div className="loginPage">
           <div className="card cadastro-card LoginCard">
             <form onSubmit={handleSubmit} className="LoginForm">
