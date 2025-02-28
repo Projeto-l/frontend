@@ -1,20 +1,21 @@
-import './App.css'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { HashRouter } from "react-router-dom";
 
-import Home from './pages/Home.jsx';
-import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx';
+import Home from "./pages/Home.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import Receita from "./pages/Receita.jsx";
 
 function App() {
-
   return (
     <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="register" element={<Register />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="register" element={<Register />} />
+      <Route path="receita" element={<Receita />} />
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;
