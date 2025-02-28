@@ -181,7 +181,7 @@ export function CalculatorCard(props) {
 
     return (
         <div className="cadastro-page">
-            <form method="post" className="card cadastro-card" onSubmit={handleSubmit}>
+            <form method="post" className="card form_card" onSubmit={handleSubmit}>
                 <div className="content">
                     <h1>Calculadora</h1>
                     {medicamentos.length > 0 ? (

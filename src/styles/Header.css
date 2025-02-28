@@ -14,9 +14,9 @@
 .header .back svg {
     width: 100%;
     height: 100%;
-    fill: #7b7979;
+    fill: var(--primary-color);
 }
 
 .header .back:hover svg {
-    fill: #7b7979;
+    fill: var(--primary-color);
 }

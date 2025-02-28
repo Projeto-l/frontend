@@ -110,7 +110,7 @@ const Login = () => {
       <div className="content">
         <Header isHome={false}></Header>
         <div className="loginPage">
-          <div className="card cadastro-card LoginCard">
+          <div className="card form_card LoginCard">
             <form onSubmit={handleSubmit} className="LoginForm">
               <h2>Login</h2>
               <div className="FormGroup">

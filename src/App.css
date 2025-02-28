@@ -1,3 +1,11 @@
+:root {    
+  --primary-color: #222e50;
+  --secundary-color: #8A95A5;
+  --terciary-color: #B9C6AE;
+  /* --secundary-color: #ecd444; yellow */
+  /* --terciary-color: #808080; gray */
+}
+
 html {
     min-width: 350px;
 }
@@ -23,7 +31,7 @@ time, mark, audio, video {
     font-size: 100%;
     font-family: "Montserrat", serif;;
     vertical-align: baseline;
-    color: #7B7979;
+    color: var(--primary-color);
 }
 
 /* HTML5 display-role reset for older browsers */
