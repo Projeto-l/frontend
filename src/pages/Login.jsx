@@ -108,9 +108,9 @@ const Login = () => {
   return (
     <div className="page">
       <div className="content">
-        <Header></Header>
+        <Header isHome={false}></Header>
         <div className="loginPage">
-          <div className="card cadastro-card LoginCard">
+          <div className="card form_card LoginCard">
             <form onSubmit={handleSubmit} className="LoginForm">
               <h2>Login</h2>
               <div className="FormGroup">
@@ -126,7 +126,7 @@ const Login = () => {
                     <p>{errors.email}</p>
                   </div>
                 }
-                <div className="InputWrapper">
+                <div className="field">
                   <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40"><path d="M226-262q59-39.666 121-60.833T480-344q71 0 133.333 21.167Q675.667-301.666 734.667-262q41-49.667 59.833-103.667 18.834-54 18.834-114.333 0-141-96.167-237.167T480-813.334q-141 0-237.167 96.167T146.666-480q0 60.333 19.167 114.333T226-262Zm253.876-184.667q-58.209 0-98.043-39.957Q342-526.581 342-584.791q0-58.209 39.957-98.042 39.958-39.834 98.167-39.834t98.043 39.958Q618-642.752 618-584.543q0 58.21-39.957 98.043-39.958 39.833-98.167 39.833ZM479.73-80q-83.097 0-156.183-31.5t-127.15-85.833q-54.064-54.334-85.23-127.227Q80-397.454 80-480.333q0-82.88 31.5-155.773Q143-709 197.333-763q54.334-54 127.227-85.5Q397.454-880 480.333-880q82.88 0 155.773 31.5Q709-817 763-763t85.5 127Q880-563 880-480.177q0 82.822-31.5 155.666T763-197.333Q709-143 635.914-111.5T479.73-80Z" /></svg>
                   <input
                     id="email"
@@ -145,7 +145,7 @@ const Login = () => {
                     <p>{errors.senha}</p>
                   </div>
                 }
-                <div className="InputWrapper">
+                <div className="field">
                   <svg xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40"><path d="M280-354q52.667 0 89.333-36.667Q406-427.333 406-480t-36.667-89.333Q332.667-606 280-606t-89.333 36.667Q154-532.667 154-480t36.667 89.333Q227.333-354 280-354Zm0 114q-100 0-170-70T40-480q0-100 70-170t170-70q83.667 0 142.167 46.333 58.5 46.334 81.833 117h341l75 75L788.667-331l-102-82.334L604-330.667l-74-74h-26q-21 74-82.667 119.334Q359.667-240 280-240Z" /></svg>
                   <input
                     type="password"

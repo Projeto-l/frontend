@@ -164,7 +164,7 @@ export function CadastroCard(props) {
 
     return (
         <div className="cadastro-page">
-            <form method="post" className="card cadastro-card" onSubmit={handleSubmit}>
+            <form method="post" className="card form_card" onSubmit={handleSubmit}>
                 <div className="content">
                     <h1>Cadastro</h1>
                     {props.onlyView && formEntries.values.status !== '' &&

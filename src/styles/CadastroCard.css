@@ -26,13 +26,13 @@ h2 {
     padding: 38px 0px;
 }
 
-.cadastro-card h1 {
+.form_card h1 {
     margin-bottom: 21px;
 }  
 
-.cadastro-card .required {
+.form_card .required {
     display: inline;
-    color: #7B7979;
+    color: var(--primary-color);
 }
 
 .field, .warning, .error {
@@ -57,7 +57,7 @@ label {
     align-items: start;
 }
 
-.submit-trabalho-page .cadastro-card input {
+.submit-trabalho-page .form_card input {
     padding: 16px;
 }
 
@@ -67,7 +67,7 @@ label {
 }
 
 .field svg {
-    fill: #7B7979;
+    fill: var(--primary-color);
 }
 
 .warning svg {
@@ -96,7 +96,7 @@ textarea, .warning p, .error p {
 select,
 textarea {
     background-color: #D6E7E9;
-    color: #7B7979;
+    color: var(--primary-color);
 }
 
 .submit-trabalho-page input, textarea {
@@ -105,7 +105,7 @@ textarea {
 }
 
 input::placeholder {
-    color: #7B7979;
+    color: var(--primary-color);
     font-style: Montserrat;
   }
 
@@ -143,8 +143,8 @@ input[type='file'] {
     font-size: 18px;
     padding: 35px 35px 16px 16px;
     background-color: #D6E7E9;
-    color: #7B7979;
-    fill: #7B7979;
+    color: var(--primary-color);
+    fill: var(--primary-color);
 }
 
 #image_preview_wr svg {
@@ -159,7 +159,7 @@ input[type='file'] {
 .field svg {
     position: absolute;
     margin-left: 15px;
-    fill: #7B7979;  
+    fill: var(--primary-color);  
     width: 30px;
     height: 30px;
 }
@@ -170,7 +170,7 @@ input[type='file'] {
     margin-left: 15px;
 }
 
-.cadastro-card input,
+.form_card input,
 select,
 textarea {
     display: block;
@@ -182,15 +182,15 @@ textarea {
     font-size: 18px;
     padding: 16px 16px 16px 16px;
     background-color: #EBEAEA;
-    color: #7B7979;
+    color: var(--primary-color);
     font-family: "Montserrat", sans-serif;
 }
 
-.cadastro-card input {
+.field:has(> svg) input {
     padding: 16px 16px 16px 60px;
 }
 
-.cadastro-card textarea {
+.form_card textarea {
     width: 100%;
     min-width: 100%;
     min-height: 100px;
@@ -234,13 +234,13 @@ textarea {
     padding: 16px;
 }
 
-.cadastro-card .buttons {
+.form_card .buttons {
     display: flex;
     justify-content: space-between;
     margin-top: 40px;
 }
   
-.cadastro-card button,
+.form_card button,
 input::file-selector-button {
     height: 56px;
     font-size: 18px;
@@ -257,13 +257,13 @@ input::file-selector-button {
 }
 
 .cancelar {
-    background-color: #7B7979;
+    background-color: var(--primary-color);
 }
 
 .cadastrar,
 .green-btn,
 input::file-selector-button {
-    background-color: #7B7979;
+    background-color: var(--primary-color);
 }
 
 .cadastrar:hover,
@@ -305,7 +305,7 @@ input[type=radio], input[type=checkbox] {
     height: 30px;
     border-radius: 10px;
     background-color: #EBEAEA;
-    color: #7B7979;
+    color: var(--primary-color);
 }
 
 .radio-container svg {
@@ -330,8 +330,8 @@ input[type=radio], input[type=checkbox] {
 }
 
 .radio-container input:checked ~ .radio {
-    border: 1px solid #7B7979;
-    background-color: #7B7979;
+    border: 1px solid var(--primary-color);
+    background-color: var(--primary-color);
     box-shadow: none;
 }
 
@@ -340,7 +340,7 @@ input[type=radio], input[type=checkbox] {
 }
 
 @media (max-width: 480px) {
-    .cadastro-card {
+    .form_card {
         padding: 36px 20px;
         margin: 0px 20px;
     }
@@ -434,5 +434,5 @@ input[type=radio], input[type=checkbox] {
 }
 
 #image_preview_wr .delete_btn svg {
-    fill: #7B7979;
+    fill: var(--primary-color);
 }

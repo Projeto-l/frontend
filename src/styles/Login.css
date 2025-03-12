@@ -19,7 +19,7 @@
     text-align: start;
     margin-bottom: 20px;
     font-size: 25px;
-    color: #7B7979;
+    color: var(--primary-color);
   }
   
   .FormGroup {
@@ -36,7 +36,7 @@
     background-color: #D8D8D8;
     border: none;
     height: 50px;  
-    color: #7B7979;   
+    color: var(--primary-color);   
   }
   
   .LoginButton {  
@@ -46,7 +46,7 @@
     align-items: center;
     position: relative;
     text-decoration: none;
-    background-color: #7B7979;
+    background-color: var(--primary-color);
     color: white;
     border: none;
     padding: 14px 20px;
@@ -65,14 +65,14 @@
     justify-content: space-between;
   }
   
-  .InputWrapper svg {
+  .field svg {
     position: absolute;
-    fill: #7B7979;
+    fill: var(--primary-color);
     margin-left: 10px;
     width: 30px;
   }
   
-  .InputWrapper {
+  .loginPage .field {
     display: flex;
     height: 50px;
     align-items: center;
@@ -90,7 +90,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 19px;
-    color: #7B7979;
+    color: var(--primary-color);
     text-decoration: none;
     font-weight: 600;
   }

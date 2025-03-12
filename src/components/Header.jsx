@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import '../styles/Header.css'
 import { Menu } from './Menu.jsx'
 
-export function Header() {
+export function Header(props) {
     const [largura, setLargura] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ export function Header() {
     return (
         <div>
             <div className={`header`} >
-                <Menu menu={``}/>
+                <Menu menu={``} isHome={props.isHome}/>
             </div>
         </div>           
     )

@@ -1,0 +1,12 @@
+.select-apresentacao-fav {
+    position: relative;
+}
+
+.select-apresentacao-fav button {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    right: 30px;
+}
