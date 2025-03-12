@@ -1,0 +1,117 @@
+.medicamento-detalhado {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.detalhe-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detalhe-icone {
+  padding: 0.75rem;
+  background-color: #d8d8d8;
+  border-radius: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  width: 3rem;
+}
+
+.detalhe-conteudo {
+  flex-grow: 1;
+  padding: 0.25rem 0;
+}
+
+.detalhe-titulo {
+  color: #7b7979;
+  font-weight: 500;
+}
+
+.detalhe-subtitulo {
+  color: #7b7979;
+  font-size: 0.8rem;
+}
+
+.detalhe-copiar {
+  padding: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notas-container {
+  margin-top: 1rem;
+}
+
+.notas-titulo {
+  color: #7b7979;
+  margin-bottom: 0.5rem;
+}
+
+.notas-conteudo {
+  background-color: #d8d8d8;
+  border-radius: 0.3rem;
+  padding: 0.75rem;
+  position: relative;
+}
+
+.notas-label {
+  color: #7b7979;
+  padding-right: 2.5rem;
+}
+
+.notas-textarea {
+  width: 100%;
+  background-color: transparent;
+  outline: none;
+  resize: none;
+  color: #6b7280;
+  font-size: 0.8rem;
+  border: none;
+  margin: 0.5rem 0;
+}
+
+.notas-copiar {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acoes-container {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.acao-botao {
+  background-color: #6b7280;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  display: flex;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+}
+
+.icon-acao {
+  height: 1.25rem;
+  width: 1.25rem;
+  margin-right: 0.5rem;
+}

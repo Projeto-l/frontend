@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Header } from '../components/Header.jsx';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Header } from "../components/Header.jsx";
 
 const Home = () => {
   return (
@@ -16,7 +16,10 @@ const Home = () => {
             <Link to="/register">Registrar</Link>
           </li>
           <li>
-            <Link to="/calculator">Calculator</Link>
+            <Link to="/receita">Receita</Link>
+          </li>
+          <li>
+            <Link to="/calculator">Calculator</Link> 
           </li>
         </ul>
       </nav>
