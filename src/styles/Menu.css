@@ -1,0 +1,36 @@
+.header_wr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+
+    & span {        
+        font-family: "Ubuntu", sans-serif;
+        font-weight: 700;
+        font-style: normal;
+        font-size: 60px;
+        letter-spacing: -0.6rem;
+
+        & span {
+            color: var(--terciary-color);
+        }
+    }
+
+    & .change_mode {
+        background-color: unset;
+        border: none;
+        cursor: pointer;
+
+        & svg {
+            fill: var(--primary-color);
+        }
+    }
+
+    @media (max-width: 400px) {
+        & span {
+            font-size: 30px;
+            letter-spacing: -0.3rem;
+        }
+    }
+}
