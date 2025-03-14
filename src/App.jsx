@@ -1,6 +1,9 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { HashRouter } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 
 import SaveRoute from './utils/SaveRoute.jsx';
 import RestoreRoute from './utils/RestoreRoute.jsx';
@@ -11,7 +14,18 @@ import Register from './pages/Register.jsx';
 import Receita from "./pages/Receita.jsx";
 import Calculator from './pages/Calculator.jsx';
 
-function App() {
+function App() {  
+  const location = useLocation();
+
+  useEffect(() => {
+    const lastRoute = localStorage.getItem("lastRoute");
+
+    if (lastRoute && lastRoute !== location.pathname) {
+      localStorage.removeItem("formData");
+      alert("Dados do formulário removidos ao mudar de rota");      
+    }
+    
+  }, [location.pathname]);
   return (
     <>
       <RestoreRoute/>

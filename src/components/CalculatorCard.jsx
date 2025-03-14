@@ -32,15 +32,20 @@ export function CalculatorCard(props) {
       }, []);
     
     useEffect(() => {
+        var savedData = localStorage.getItem("formData");
+        if (savedData) {
+          	savedData = JSON.parse(savedData);
+          	props.data = savedData;
+        }
         formEntries.setValues({
             medicamento: props.data?.medicamento || '',
-            apresetacao: props.data?.apresentacao || '',
+            apresentacao: props.data?.apresentacao || '',
             tipoDose: props.data?.tipoDose || '',
             dose: props.data?.dose || '',
             peso: props.data?.peso || '',
             intervalo: props.data?.intervalo || '',
         });
-    }, [props.data]);
+    }, []);
 
     const useFormEntries = ({ initialValues }) => {
         const [values, setValues] = useState(initialValues);
@@ -48,11 +53,17 @@ export function CalculatorCard(props) {
         function handleChange(event) {
             const fieldName = event.target.getAttribute('name');
             const value = event.target.value;
+						console.log(event.target, value);
             setValues({
                 ...values,
                 [fieldName]: value,
             });
         };
+        
+        useEffect(() => {
+            localStorage.setItem("formData", JSON.stringify(values));
+            console.log(values);
+        }, [values]);
 
         // usado para verificar os valores
         // useEffect(() => {
@@ -82,6 +93,7 @@ export function CalculatorCard(props) {
         if (Object.keys(errorsList).length !== 0) { //se houverem erros nos campos
             return null;
         } else {
+            localStorage.setItem("formData", "");
             submitToApi(event);
         }
     }
@@ -121,9 +133,7 @@ export function CalculatorCard(props) {
     };
 
     const handleMedicamentoChange = (e) => {
-        console.log("Lista de medicamentos:", medicamentos);
-        console.log("Valor selecionado:", e.target.value);
-      
+		formEntries.handleChange(e);    
         const medicamento = medicamentos.find((m) => m.id === String(e.target.value));
       
         if (!medicamento) {
@@ -136,6 +146,7 @@ export function CalculatorCard(props) {
     };
 
     const handleApresentacaoChange = (e) => {
+	  formEntries.handleChange(e);
       const apresentacao = medicamentoSelecionado.apresentacoes.find((a) => a.dosagem === e.target.value);
       setApresentacaoSelecionada(apresentacao);
     };
@@ -185,7 +196,7 @@ export function CalculatorCard(props) {
                 <div className="content">
                     <h1>Calculadora</h1>
                     {medicamentos.length > 0 ? (
-                    <select onChange={handleMedicamentoChange} defaultValue="">
+                    <select onChange={handleMedicamentoChange} defaultValue={formEntries.values.medicamento} name="medicamento">
                         <option value="" disabled>Escolha um medicamento</option>
                         {medicamentos.map((med) => (
                         <option key={med.id} value={med.id}>{med.nome}</option>
@@ -199,10 +210,10 @@ export function CalculatorCard(props) {
                         <>
                             <label htmlFor="">apresentacao</label>
                             <div className="select-apresentacao-fav">
-                                <select onChange={handleApresentacaoChange} defaultValue="">
+                                <select onChange={handleApresentacaoChange} defaultValue={formEntries.values.apresentacao} name="apresentacao">
                                     <option value="" disabled>Escolha uma apresentação</option>
                                     {medicamentoSelecionado.apresentacoes.map((apresentacao, index) => (
-                                    <option key={index} value={apresentacao.dosagem}>
+                                    <option key={index} value={`${apresentacao.dosagem} - ${apresentacao.forma_farmaceutica}`}>
                                         {apresentacao.dosagem} - {apresentacao.forma_farmaceutica}
                                     </option>
                                     ))}
@@ -235,13 +246,13 @@ export function CalculatorCard(props) {
                             </div>
                         }
                         <div className="radio-container">
-                            <input disabled={props.onlyView ? true : undefined} type="radio" id="mgKgDose" name="medicamento" value="mgKgDose" onClick={formEntries.handleChange} checked={formEntries.values.medicamento === "mgKgDose"} />
+                            <input disabled={props.onlyView ? true : undefined} type="radio" id="mgKgDose" name="tipoDose" value="mgKgDose" onClick={formEntries.handleChange} checked={formEntries.values.tipoDose === "mgKgDose"} />
                             <label htmlFor="mgKgDose">mg/kg/dose</label>
                             <span className="radio"></span>
                             <Icon name="check"></Icon>
                         </div>
                         <div className="radio-container">
-                            <input disabled={props.onlyView ? true : undefined} type="radio" id="mgKgDia" name="medicamento" value="mgKgDia" onClick={formEntries.handleChange} checked={formEntries.values.medicamento === "mgKgDia"} />
+                            <input disabled={props.onlyView ? true : undefined} type="radio" id="mgKgDia" name="tipoDose" value="mgKgDia" onClick={formEntries.handleChange} checked={formEntries.values.tipoDose === "mgKgDia"} />
                             <label htmlFor="mgKgDia">mg/kg/dia</label>
                             <span className="radio"></span>
                             <Icon name="check"></Icon>

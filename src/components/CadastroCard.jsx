@@ -10,6 +10,11 @@ export function CadastroCard(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
+        var savedData = localStorage.getItem("formData");
+        if (savedData) {
+            savedData = JSON.parse(savedData);
+            props.data = savedData;
+        }
         formEntries.setValues({
             papel: props.data?.papel?.toLowerCase() || '',
             email: props.data?.email || '',
@@ -22,7 +27,7 @@ export function CadastroCard(props) {
             cidade: props.data?.cidade || '',
             status: props.data?.status || '',
         });
-    }, [props.data]);
+    }, []);
 
     const useFormEntries = ({ initialValues }) => {
         const [values, setValues] = useState(initialValues);
@@ -36,10 +41,9 @@ export function CadastroCard(props) {
             });
         };
 
-        // usado para verificar os valores
-        // useEffect(() => {
-        //     console.log(values);
-        // }, [values]);
+        useEffect(() => {
+            localStorage.setItem("formData", JSON.stringify(values));
+        }, [values]);
 
         return { values, handleChange, setValues };
     };
@@ -124,6 +128,7 @@ export function CadastroCard(props) {
         if (Object.keys(errorsList).length !== 0) { //se houverem erros nos campos
             return null;
         } else {
+            localStorage.setItem("formData", "");
             submitToApi(event);
         }
     };

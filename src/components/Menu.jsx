@@ -23,6 +23,7 @@ export function Menu(props) {
     const navigate = useNavigate();
     
     const handleNavigation = () => {
+        localStorage.setItem("formData", "");
         navigate("/");
     };
 
