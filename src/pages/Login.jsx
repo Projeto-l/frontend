@@ -15,6 +15,17 @@ const Login = () => {
 //   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    var savedData = localStorage.getItem("formData");
+    if (savedData) {
+      savedData = JSON.parse(savedData);
+      formEntries.setValues({
+          email: savedData.email,
+          senha: savedData.senha,
+      });
+    }
+  }, []);
+
   const useFormEntries = ({ initialValues }) => {
     const [values, setValues] = useState(initialValues);
 
@@ -27,7 +38,11 @@ const Login = () => {
       });
     };
 
-    return { values, handleChange };
+    useEffect(() => {
+      localStorage.setItem("formData", JSON.stringify(values));
+    }, [values]);
+
+    return { values, handleChange, setValues };
   };
 
   const formEntries = useFormEntries({

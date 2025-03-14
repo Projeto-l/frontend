@@ -1,0 +1,66 @@
+.recent-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0px 4px 4px rgba(185, 198, 174, 0.25);
+    background-color: white;
+    padding: 9px 11px;
+    border-radius: 13px;
+    width: 300px;
+}
+
+.tag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: var(--terciary-color);
+    width: fit-content;
+    padding: 2px 5px;
+    border-radius: 7px;
+}
+
+.tag svg {
+    fill: #fff;
+}
+
+.tag span {
+    color: #fff;
+}
+
+.recent-item-date {
+    color: #222E50;
+}
+
+.recent-item-date-bold {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.recent-item-date-normal {
+    font-size: 15px;
+    font-weight: normal;
+}
+
+.medication-name {
+    color: #222E50;
+    font-size: 12px;
+    text-align: center;
+    background-color: #F4F4F4;
+    width: fit-content;
+    padding: 5px;
+    border-radius: 7px;
+}
+
+.medication-details {
+    color: var(--secundary-color);
+    font-size: 12px;
+    padding-left: 10px;
+}
+
+.medication-time-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
