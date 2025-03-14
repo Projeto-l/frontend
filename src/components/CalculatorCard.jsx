@@ -1,304 +1,397 @@
-
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Icon } from '../components/Icons';
-import '../styles/Calculator.css'
+import '../styles/Calculator.css';
 
 export function CalculatorCard(props) {
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+  const [medicamentos, setMedicamentos] = useState([]);
+  const [medicamentoSelecionado, setMedicamentoSelecionado] = useState(null);
+  const [apresentacoes, setApresentacoes] = useState([]);
+  const [apresentacaoSelecionada, setApresentacaoSelecionada] = useState(null);
+  const [calculo, setCalculo] = useState(null);
 
-    const [errors, setErrors] = useState({});
-    const [medicamentos, setMedicamentos] = useState([]);
-    const [medicamentoSelecionado, setMedicamentoSelecionado] = useState(null);
-    const [apresentacaoSelecionada, setApresentacaoSelecionada] = useState(null);
-    const [calculo, setCalculo] = useState(null);
-
-    
-    useEffect(() => {
-        console.log(medicamentoSelecionado);
-    }, [medicamentoSelecionado]);
-
-    useEffect(() => {
-        const fetchDados = async () => {
-          try {
-            const resposta = await fetch("http://localhost:5000/medicamentos");
-            if (!resposta.ok) throw new Error("Erro ao buscar os dados");
-            const json = await resposta.json();
-            setMedicamentos(json);
-          } catch (erro) {
-            console.log(erro);
-          } 
-        };
-    
-        fetchDados();
-      }, []);
-    
-    useEffect(() => {
-        formEntries.setValues({
-            medicamento: props.data?.medicamento || '',
-            apresetacao: props.data?.apresentacao || '',
-            tipoDose: props.data?.tipoDose || '',
-            dose: props.data?.dose || '',
-            peso: props.data?.peso || '',
-            intervalo: props.data?.intervalo || '',
-        });
-    }, [props.data]);
-
-    const useFormEntries = ({ initialValues }) => {
-        const [values, setValues] = useState(initialValues);
-
-        function handleChange(event) {
-            const fieldName = event.target.getAttribute('name');
-            const value = event.target.value;
-            setValues({
-                ...values,
-                [fieldName]: value,
-            });
-        };
-
-        // usado para verificar os valores
-        // useEffect(() => {
-        //     console.log(values);
-        // }, [values]);
-
-        return { values, handleChange, setValues };
+  useEffect(() => {
+    const fetchDados = async () => {
+      try {
+        const resposta = await fetch("http://localhost:8080/api/medications");
+        if (!resposta.ok) throw new Error("Erro ao buscar os dados");
+        const json = await resposta.json();
+        setMedicamentos(json);
+      } catch (erro) {
+        console.log(erro);
+      }
     };
+    fetchDados();
+  }, []);
 
-    const formEntries = useFormEntries({
-        initialValues: {
-            medicamento: props.data?.medicamento || '',
-            apresetacao: props.data?.apresentacao || '',
-            tipoDose: props.data?.tipoDose || '',
-            dose: props.data?.dose || '',
-            peso: props.data?.peso || '',
-            intervalo: props.data?.intervalo || '',
-        }
+  useEffect(() => {
+    formEntries.setValues({
+      medicamento: props.data?.medicamento || '',
+      apresentacao: props.data?.apresentacao || '',
+      tipoDose: props.data?.tipoDose || '',
+      dose: props.data?.dose || '',
+      peso: props.data?.peso || '',
+      intervalo: props.data?.intervalo || '',
     });
-    
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        formEntries.handleChange(event);
-        const errorsList = {}//validate(formEntries.values);
-        setErrors(errorsList);
+  }, [props.data]);
 
-        if (Object.keys(errorsList).length !== 0) { //se houverem erros nos campos
-            return null;
-        } else {
-            submitToApi(event);
-        }
+  function useFormEntries({ initialValues }) {
+    const [values, setValues] = useState(initialValues);
+    function handleChange(event) {
+      const fieldName = event.target.getAttribute('name');
+      const value = event.target.value;
+      setValues({
+        ...values,
+        [fieldName]: value,
+      });
     }
+    return { values, handleChange, setValues };
+  }
 
-    const submitToApi = async (event) => {
-        const formData = new FormData(event.target);
-        const data = {};
-        formData.forEach((value, key) => {
-            data[key] = value;
-        });
+  const formEntries = useFormEntries({
+    initialValues: {
+      medicamento: '',
+      apresentacao: '',
+      tipoDose: '',
+      dose: '',
+      peso: '',
+      intervalo: '',
+    }
+  });
 
-        try {
-            const url = `${import.meta.env.VITE_API_URL}/auth/register`;
-            const response = await fetch(url, {
-                method: 'POST',
-                mode: "cors",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
+  function formatPresentationLabel(ap) {
+    if (ap.mgPerTablet) {
+      return `Comprimido - ${ap.mgPerTablet} mg`;
+    } else if (ap.mgPerMl && ap.mlPerDrop) {
+      return `Gotas - ${ap.mgPerMl} mg/mL, ${ap.mlPerDrop} mL/gota`;
+    } else if (ap.mgPerMl) {
+      return `Suspensão oral - ${ap.mgPerMl} mg/mL`;
+    }
+    return 'Apresentação desconhecida';
+  }
 
-            const json = await response.json();
-            console.log(json);
+  function handleMedicamentoChange(e) {
+    const selectedId = e.target.value;
+    const medicamento = medicamentos.find((m) => m.medicationId === selectedId);
+    if (!medicamento) {
+      console.error("Nenhum medicamento encontrado para o ID:", selectedId);
+      return;
+    }
+    setMedicamentoSelecionado(medicamento);
+    setApresentacoes(medicamento.presentations || []);
+    if (medicamento.defaultDosePerAdministration != null) {
+      formEntries.setValues(prev => ({
+        ...prev,
+        medicamento: 'mgKgDose',
+        dose: medicamento.defaultDosePerAdministration
+      }));
+    } else if (medicamento.defaultDosePerDay != null) {
+      formEntries.setValues(prev => ({
+        ...prev,
+        medicamento: 'mgKgDia',
+        dose: medicamento.defaultDosePerDay
+      }));
+    } else {
+      formEntries.setValues(prev => ({
+        ...prev,
+        medicamento: '',
+        dose: ''
+      }));
+    }
+  }
 
-            if (response.ok) {
-                console.log('Post enviado com sucesso!');
-                window.location.href = "/login";
-            } else {
-                console.error('Email ou telefone já cadastrados', response.statusText);
-                setErrors({ registro: 'Email ou telefone já cadastrados' });
-            }
-        } catch (error) {
-            console.error('Erro ao enviar o post:', error);
-        }
-        // enviar para o back
-    };
+  function handleApresentacaoChange(e) {
+    const apresentacao = apresentacoes.find((a) => a.idPresentation === e.target.value);
+    setApresentacaoSelecionada(apresentacao);
+  }
 
-    const handleMedicamentoChange = (e) => {
-        console.log("Lista de medicamentos:", medicamentos);
-        console.log("Valor selecionado:", e.target.value);
-      
-        const medicamento = medicamentos.find((m) => m.id === String(e.target.value));
-      
-        if (!medicamento) {
-          console.error("Nenhum medicamento encontrado para o ID:", e.target.value);
-          return;
-        }
-      
-        setMedicamentoSelecionado(medicamento);
-        setApresentacoes(medicamento.apresentacoes || []);
-    };
-
-    const handleApresentacaoChange = (e) => {
-      const apresentacao = medicamentoSelecionado.apresentacoes.find((a) => a.dosagem === e.target.value);
-      setApresentacaoSelecionada(apresentacao);
-    };
-
-    const toggleFavorito = () => {
-        if (!apresentacaoSelecionada) return;
-        setApresentacaoSelecionada((prev) => ({
+  function handleTipoDoseChange(e) {
+    formEntries.handleChange(e);
+    const novoValor = e.target.value;
+    if (!medicamentoSelecionado) return;
+    if (novoValor === 'mgKgDose') {
+      if (medicamentoSelecionado.defaultDosePerAdministration != null) {
+        formEntries.setValues(prev => ({
           ...prev,
-          ehFavorito: prev.ehFavorito === "false" ? "true" : "false"
+          dose: medicamentoSelecionado.defaultDosePerAdministration
         }));
-      };
+      } else {
+        formEntries.setValues(prev => ({
+          ...prev,
+          dose: ''
+        }));
+      }
+    } else if (novoValor === 'mgKgDia') {
+      if (medicamentoSelecionado.defaultDosePerDay != null) {
+        formEntries.setValues(prev => ({
+          ...prev,
+          dose: medicamentoSelecionado.defaultDosePerDay
+        }));
+      } else {
+        formEntries.setValues(prev => ({
+          ...prev,
+          dose: ''
+        }));
+      }
+    }
+  }
 
-    const calculate = () => {
-        console.log(formEntries.values);
-        const values = formEntries.values;
-        // if (!values.peso || !values.dosePorKg || !values.tipoDose ) return null;
-      
-        const doseTotal = Number(values.peso) * Number(values.dose); // Cálculo base da dose em mg
+  function toggleFavorito() {
+    if (!apresentacaoSelecionada) return;
+    setApresentacaoSelecionada((prev) => ({
+      ...prev,
+      ehFavorito: prev.ehFavorito === "false" ? "true" : "false"
+    }));
+  }
 
-        // console.log(doseTotal);
+  async function calculate() {
+    const values = formEntries.values;
+    if (!medicamentoSelecionado || !apresentacaoSelecionada || !values.dose) {
+      setCalculo("Erro: Medicamento, apresentação ou dose não selecionados.");
+      return;
+    }
+    let calculationType = '';
+    if (values.medicamento === 'mgKgDose') {
+      calculationType = 'mg/kg/dose';
+    } else if (values.medicamento === 'mgKgDia') {
+      calculationType = 'mg/kg/day';
+    }
+    const payload = {
+      medicationId: medicamentoSelecionado.medicationId,
+      presentationId: apresentacaoSelecionada.idPresentation,
+      calculationType,
+      standardDose: Number(values.dose),
+      weight: values.peso ? Number(values.peso) : null,
+      interval: values.intervalo ? Number(values.intervalo) : null
+    };
+    try {
+      const response = await fetch("http://localhost:8080/api/dose-calculation", {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        throw new Error("Erro na API de cálculo");
+      }
+      const json = await response.json();
+      const mgTotal = json.calculatedDose;
+      let textoFinal = '';
+      if (apresentacaoSelecionada.mgPerTablet) {
+        const comprimidos = mgTotal / apresentacaoSelecionada.mgPerTablet;
+        textoFinal = `Dose: ${comprimidos.toFixed(2)} comprimidos`;
+      } else if (apresentacaoSelecionada.mgPerMl && apresentacaoSelecionada.mlPerDrop) {
+        const volume = mgTotal / apresentacaoSelecionada.mgPerMl;
+        const gotas = volume / apresentacaoSelecionada.mlPerDrop;
+        textoFinal = `Dose: ${gotas.toFixed(2)} gotas`;
+      } else if (apresentacaoSelecionada.mgPerMl) {
+        const volume = mgTotal / apresentacaoSelecionada.mgPerMl;
+        textoFinal = `Dose: ${volume.toFixed(2)} mL`;
+      } else {
+        textoFinal = `Dose: ${mgTotal.toFixed(2)} mg`;
+      }
+      setCalculo(textoFinal);
+    } catch (error) {
+      console.error("Erro ao calcular a dose:", error);
+      setCalculo("Erro ao calcular a dose");
+    }
+  }
 
-        let retorno = `${doseTotal} mg (unidade desconhecida)`;
-      
-        if (apresentacaoSelecionada.forma_farmaceutica.includes("Suspensão oral")) {
-          // Suspensão: precisa dividir pela concentração (mg/mL)
-          const concentracao = Number(apresentacaoSelecionada.dosagem.split("mg/")[0]); // Exemplo: "200mg/5mL" → 200
-          const volume = Number(apresentacaoSelecionada.dosagem.split("/")[1].replace("mL", "")); // Exemplo: "200mg/5mL" → 5
-          const doseEmMl = (doseTotal * volume) / concentracao;
-          retorno = `${doseEmMl.toFixed(2)} mL`;
-        } 
-        
-        if (apresentacaoSelecionada.forma_farmaceutica.includes("Comprimido")) {
-          // Comprimidos: divide pela dosagem do comprimido (mg/unidade)
-          const dosagemComprimido = Number(apresentacaoSelecionada.dosagem.replace("mg", ""));
-          const quantidadeComprimidos = doseTotal / dosagemComprimido;
-          retorno = `${quantidadeComprimidos.toFixed(2)} comprimidos`;
-        }
+  function isCalculateDisabled() {
+    const { medicamento, dose, peso, intervalo } = formEntries.values;
+    if (!medicamentoSelecionado || !apresentacaoSelecionada || !medicamento) {
+      return true;
+    }
+    if (!dose) return true;
+    if (medicamento === 'mgKgDia' && (!peso || !intervalo)) {
+      return true;
+    }
+    return false;
+  }
 
-        setCalculo(retorno);
-      };
-      
-      
+  const buttonCalcularClass = `calcular${!isCalculateDisabled() ? ' ativo' : ''}`;
 
-    return (
-        <div className="cadastro-page">
-            <form method="post" className="card form_card" onSubmit={handleSubmit}>
-                <div className="content">
-                    <h1>Calculadora</h1>
-                    {medicamentos.length > 0 ? (
-                    <select onChange={handleMedicamentoChange} defaultValue="">
-                        <option value="" disabled>Escolha um medicamento</option>
-                        {medicamentos.map((med) => (
-                        <option key={med.id} value={med.id}>{med.nome}</option>
-                        ))}
-                    </select>
+  function handleSubmit(event) {
+    event.preventDefault();
+    formEntries.handleChange(event);
+    const errorsList = {};
+    setErrors(errorsList);
+    if (Object.keys(errorsList).length !== 0) {
+      return null;
+    }
+  }
+
+  return (
+    <div className="cadastro-page">
+      <form method="post" className="card form_card" onSubmit={handleSubmit}>
+        <div className="content">
+          <h1>Calculadora</h1>
+          {medicamentos.length > 0 ? (
+            <select onChange={handleMedicamentoChange} defaultValue="">
+              <option value="" disabled>Escolha um medicamento</option>
+              {medicamentos.map((med) => (
+                <option key={med.medicationId} value={med.medicationId}>
+                  {med.name}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <p>Carregando medicamentos...</p>
+          )}
+          {medicamentoSelecionado && (
+            <>
+              <label htmlFor="">apresentacao</label>
+              <div className="select-apresentacao-fav">
+                <select onChange={handleApresentacaoChange} defaultValue="">
+                  <option value="" disabled>Escolha uma apresentação</option>
+                  {apresentacoes.map((ap, index) => (
+                    <option key={ap.idPresentation || index} value={ap.idPresentation}>
+                      {formatPresentationLabel(ap)}
+                    </option>
+                  ))}
+                </select>
+                {apresentacaoSelecionada && (
+                  <button
+                    style={{
+                      marginLeft: "10px",
+                      fontSize: "20px",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                    onClick={toggleFavorito}
+                    type="button"
+                  >
+                    {apresentacaoSelecionada.ehFavorito === "true" ? (
+                      <Icon name="heart_filled" />
                     ) : (
-                    <p>Carregando medicamentos...</p>
+                      <Icon name="heart" />
                     )}
-
-                    {medicamentoSelecionado && (
-                        <>
-                            <label htmlFor="">apresentacao</label>
-                            <div className="select-apresentacao-fav">
-                                <select onChange={handleApresentacaoChange} defaultValue="">
-                                    <option value="" disabled>Escolha uma apresentação</option>
-                                    {medicamentoSelecionado.apresentacoes.map((apresentacao, index) => (
-                                    <option key={index} value={apresentacao.dosagem}>
-                                        {apresentacao.dosagem} - {apresentacao.forma_farmaceutica}
-                                    </option>
-                                    ))}
-                                </select>
-                                {apresentacaoSelecionada && (
-                                    <button
-                                    style={{
-                                        marginLeft: "10px",
-                                        fontSize: "20px",
-                                        background: "none",
-                                        border: "none",
-                                        cursor: "pointer",
-                                    }}
-                                    onClick={toggleFavorito}
-                                    >
-                                    {apresentacaoSelecionada.ehFavorito === "true" ?
-                                     <Icon name="heart_filled"></Icon> : 
-                                     <Icon name="heart"></Icon>}
-                                    </button>
-                                )}
-                            </div>
-                        </>
-                    )}
-                    <fieldset>
-                        <label htmlFor="">Tipo de dose</label>
-                        {errors.tipoDose &&
-                            <div className="error">
-                                <Icon name="error"></Icon>
-                                <p>{errors.tipoDose}</p>
-                            </div>
-                        }
-                        <div className="radio-container">
-                            <input disabled={props.onlyView ? true : undefined} type="radio" id="mgKgDose" name="medicamento" value="mgKgDose" onClick={formEntries.handleChange} checked={formEntries.values.medicamento === "mgKgDose"} />
-                            <label htmlFor="mgKgDose">mg/kg/dose</label>
-                            <span className="radio"></span>
-                            <Icon name="check"></Icon>
-                        </div>
-                        <div className="radio-container">
-                            <input disabled={props.onlyView ? true : undefined} type="radio" id="mgKgDia" name="medicamento" value="mgKgDia" onClick={formEntries.handleChange} checked={formEntries.values.medicamento === "mgKgDia"} />
-                            <label htmlFor="mgKgDia">mg/kg/dia</label>
-                            <span className="radio"></span>
-                            <Icon name="check"></Icon>
-                        </div>
-                    </fieldset>
-                    {errors.dose &&
-                        <div className="error">
-                            <Icon name="error"></Icon>
-                            <p>{errors.dose}</p>
-                        </div>
-                    }
-                    <label htmlFor="">Dose</label>
-                    {!props.onlyView &&
-                        <div className="field">
-                            <input disabled={props.onlyView ? true : undefined} placeholder="Dose" name="dose" id="dose" onChange={formEntries.handleChange} value={formEntries.values.dose} />
-                        </div>}
-                    {errors.peso &&
-                        <div className="error">
-                            <Icon name="error"></Icon>
-                            <p>{errors.peso}</p>
-                        </div>
-                    }
-                    <label htmlFor="">Peso</label>
-                    <div className="field">
-                        <input disabled={props.onlyView ? true : undefined} placeholder="Peso" name="peso" id="peso" onChange={formEntries.handleChange} value={formEntries.values.peso} />
-                    </div>
-                    {errors.intervalo &&
-                        <div className="error">
-                            <Icon name="error"></Icon>
-                            <p>{errors.intervalo}</p>
-                        </div>
-                    }
-                    <label htmlFor="">Intervalo</label>
-                    <div className="field">
-                        <input disabled={props.onlyView ? true : undefined} placeholder="Intervalo" name="intervalo" id="intervalo" onChange={formEntries.handleChange} value={formEntries.values.intervalo} />
-                    </div>
-
-                    
-                  { calculo &&
-                    <div className="field">
-                        <input disabled={true} placeholder="calculo" name="calculo" id="calculo" value={calculo} />
-                    </div>
-                    }
-
-                    {errors.calculo &&
-                        <div className="error">
-                            <Icon name="error"></Icon>
-                            <p>{errors.calculo}</p>
-                        </div>
-                    }
-                    {!props.onlyView &&
-                        <div className="buttons">
-                            <button className="cancelar" onClick={() => navigate('/')}>Cancelar</button>
-                            <button className="calcular" onClick={calculate}>Calcular</button>
-                        </div>}
-                </div>
-            </form>
+                  </button>
+                )}
+              </div>
+            </>
+          )}
+          <fieldset>
+            <label htmlFor="">Tipo de dose</label>
+            {errors.tipoDose && (
+              <div className="error">
+                <Icon name="error" />
+                <p>{errors.tipoDose}</p>
+              </div>
+            )}
+            <div className="radio-container">
+              <input
+                type="radio"
+                id="mgKgDose"
+                name="medicamento"
+                value="mgKgDose"
+                onClick={handleTipoDoseChange}
+                checked={formEntries.values.medicamento === "mgKgDose"}
+              />
+              <label htmlFor="mgKgDose">mg/kg/dose</label>
+              <span className="radio"></span>
+              <Icon name="check" />
+            </div>
+            <div className="radio-container">
+              <input
+                type="radio"
+                id="mgKgDia"
+                name="medicamento"
+                value="mgKgDia"
+                onClick={handleTipoDoseChange}
+                checked={formEntries.values.medicamento === "mgKgDia"}
+              />
+              <label htmlFor="mgKgDia">mg/kg/dia</label>
+              <span className="radio"></span>
+              <Icon name="check" />
+            </div>
+          </fieldset>
+          {errors.dose && (
+            <div className="error">
+              <Icon name="error" />
+              <p>{errors.dose}</p>
+            </div>
+          )}
+          <label htmlFor="">Dose</label>
+          <div className="field">
+            <input
+              placeholder="Dose"
+              name="dose"
+              id="dose"
+              onChange={formEntries.handleChange}
+              value={formEntries.values.dose}
+            />
+          </div>
+          {errors.peso && (
+            <div className="error">
+              <Icon name="error" />
+              <p>{errors.peso}</p>
+            </div>
+          )}
+          <label htmlFor="">Peso</label>
+          <div className="field">
+            <input
+              placeholder="Peso"
+              name="peso"
+              id="peso"
+              onChange={formEntries.handleChange}
+              value={formEntries.values.peso}
+            />
+          </div>
+          {errors.intervalo && (
+            <div className="error">
+              <Icon name="error" />
+              <p>{errors.intervalo}</p>
+            </div>
+          )}
+          <label htmlFor="">Intervalo</label>
+          <div className="field">
+            <input
+              placeholder="Intervalo"
+              name="intervalo"
+              id="intervalo"
+              onChange={formEntries.handleChange}
+              value={formEntries.values.intervalo}
+            />
+          </div>
+          {calculo && (
+            <div className="field">
+              <input
+                disabled={true}
+                placeholder="calculo"
+                name="calculo"
+                id="calculo"
+                value={calculo}
+              />
+            </div>
+          )}
+          {errors.calculo && (
+            <div className="error">
+              <Icon name="error" />
+              <p>{errors.calculo}</p>
+            </div>
+          )}
+          <div className="buttons">
+            <button
+              className="cancelar"
+              type="button"
+              onClick={() => navigate('/')}
+            >
+              Cancelar
+            </button>
+            <button
+              className={buttonCalcularClass}
+              type="button"
+              onClick={calculate}
+              disabled={isCalculateDisabled()}
+            >
+              Calcular
+            </button>
+          </div>
         </div>
-    )
+      </form>
+    </div>
+  );
 }
