@@ -14,7 +14,7 @@ export function CalculatorCard(props) {
     const [medicamentoSelecionado, setMedicamentoSelecionado] = useState(null);
     const [apresentacoes, setApresentacoes] = useState([]);
     const [apresentacaoSelecionada, setApresentacaoSelecionada] = useState(null);
-    const [calculo, setCalculo] = useState("Dose: 2.5ml (25mg) a cada 4 horas");
+    const [calculo, setCalculo] = useState("");
     const [showDuracao, setShowDuracao] = useState(false);
 
     useEffect(() => {
