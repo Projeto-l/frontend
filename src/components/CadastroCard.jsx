@@ -128,6 +128,7 @@ export function CadastroCard(props) {
         if (Object.keys(errorsList).length !== 0) { //se houverem erros nos campos
             return null;
         } else {
+            navigate("/login");
             localStorage.setItem("formData", "");
             submitToApi(event);
         }
