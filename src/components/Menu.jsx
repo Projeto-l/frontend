@@ -15,9 +15,9 @@ export function Menu(props) {
     const isTabMode = () => {
         var retorno = false;
         if (chrome.extension.getViews({ type: "popup" }).length === 0) {
-            retorno = true;
+           retorno = true;
         }
-        return retorno;
+       return retorno;
     };
 
     const navigate = useNavigate();

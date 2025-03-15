@@ -10,3 +10,57 @@
     top: 0;
     right: 30px;
 }
+
+.buttons button.calcular {
+    cursor: not-allowed;
+    color: var(--primary-color);
+  }
+  
+  .buttons button.calcular.ativo {
+    opacity: 1;
+    background-color: #222e50;
+    cursor: pointer;
+
+  }
+  
+  .result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 16px;
+    border-radius: 13px;
+    width: 100%;
+    background-color: var(--sucess-backgorund);
+  }
+
+  .result button {
+    background-color: transparent;
+  }
+
+  .result button svg {
+    fill: var(--primary-color);
+  }
+
+  .result_calculate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #7d7d7da6;
+  }
+
+  .dias_tramento_modal {
+    position: absolute;
+    background-color: #f4f4f4;
+  }
