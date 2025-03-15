@@ -12,6 +12,7 @@ import Home from './pages/Home.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Receita from "./pages/Receita.jsx";
+import Receitas from "./pages/Receitas.jsx";
 import Calculator from './pages/Calculator.jsx';
 
 function App() {  
@@ -35,6 +36,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/receita" element={<Receita />} />
+          <Route path="/receitas" element={<Receitas />} />
           <Route path="/calculator" element={<Calculator/>}/>
       </Routes>
     </>

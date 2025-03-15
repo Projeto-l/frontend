@@ -26,11 +26,11 @@ const Home = () => {
                         <Icon name="calculator"></Icon>
                         <span>Calculadora</span>
                     </button>
-                    <button className="menu-button" onClick={() => {navigateTo("/prescription")}} >
+                    <button className="menu-button" onClick={() => {navigateTo("/receita")}} >
                         <Icon name="prescription"></Icon>
                         <span>Nova Receita</span>
                     </button>
-                    <button className="menu-button" onClick={() => {navigateTo("/prescriptions")}} >
+                    <button className="menu-button" onClick={() => {navigateTo("/receitas")}} >
                         <Icon name="prescriptions"></Icon>
                         <span>Receitas</span>
                     </button>
