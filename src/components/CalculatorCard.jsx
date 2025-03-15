@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '../components/Icons';
+import {
+    Copy,
+} from "lucide-react";
 import '../styles/Calculator.css';
+import { areCookiesMutableInCurrentPhase } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 export function CalculatorCard(props) {
     const navigate = useNavigate();
@@ -10,7 +14,8 @@ export function CalculatorCard(props) {
     const [medicamentoSelecionado, setMedicamentoSelecionado] = useState(null);
     const [apresentacoes, setApresentacoes] = useState([]);
     const [apresentacaoSelecionada, setApresentacaoSelecionada] = useState(null);
-    const [calculo, setCalculo] = useState(null);
+    const [calculo, setCalculo] = useState("");
+    const [showDuracao, setShowDuracao] = useState(false);
 
     useEffect(() => {
         const fetchDados = async () => {
@@ -34,6 +39,7 @@ export function CalculatorCard(props) {
             dose: props.data?.dose || '',
             peso: props.data?.peso || '',
             intervalo: props.data?.intervalo || '',
+            dias: props.data?.dias || '',
         });
     }, [props.data]);
 
@@ -58,6 +64,7 @@ export function CalculatorCard(props) {
             dose: '',
             peso: '',
             intervalo: '',
+            dias: '',
         }
     });
 
@@ -222,6 +229,19 @@ export function CalculatorCard(props) {
         }
     }
 
+    const addToPrescriptions = () => {
+
+    }
+
+    const addDuracao = () => {
+        setShowDuracao(true);
+    }
+
+    const copyToClipBoard = () => {
+        navigator.clipboard.writeText(calculo);
+        alert('Resultado copiado para a área de transferência!');
+    };
+
     return (
         <div className="cadastro-page">
             <form method="post" className="card form_card" onSubmit={handleSubmit}>
@@ -357,14 +377,20 @@ export function CalculatorCard(props) {
                         />
                     </div>
                     {calculo && (
-                        <div className="field">
-                            <input
-                                disabled={true}
-                                placeholder="calculo"
-                                name="calculo"
-                                id="calculo"
-                                value={calculo}
-                            />
+                        <div className="result_calculate">
+                            <div className="result">
+                                <p>{calculo}</p>
+                                <button onClick={copyToClipBoard}>
+                                    <Icon name="copy"></Icon>
+                                </button>
+                            </div>
+                            <button
+                                className="cancelar"
+                                type="button"
+                                onClick={calculate}
+                            >
+                                Calcular
+                            </button>
                         </div>
                     )}
                     {errors.calculo && (
@@ -381,15 +407,60 @@ export function CalculatorCard(props) {
                         >
                             Cancelar
                         </button>
-                        <button
-                            className={buttonCalcularClass}
-                            type="button"
-                            onClick={calculate}
-                            disabled={isCalculateDisabled()}
-                        >
-                            Calcular
-                        </button>
+                        {(!calculo &&
+                            <button
+                                className={buttonCalcularClass}
+                                type="button"
+                                onClick={calculate}
+                                disabled={isCalculateDisabled()}
+                            >
+                                Calcular
+                            </button>
+                        )}
+                        {calculo && (
+                            <button
+                                className="cancelar"
+                                type="button"
+                                onClick={addDuracao}
+                            >
+                                Adicionar à receita
+                            </button>
+                        )}
                     </div>
+                    {showDuracao && (
+                        <div className="modal">
+                            <div className="card dias_tramento_modal">
+                                <h1>Duração</h1>
+                                <label htmlFor="dias">Dias de Tratamento</label>
+                                <div className="field">
+                                    <input
+                                        placeholder="Dias"
+                                        name="dias"
+                                        id="dias"
+                                        onChange={formEntries.handleChange}
+                                        value={formEntries.values.dias}
+                                    />
+                                </div>
+                                <div className="buttons">
+                                    <button
+                                        className="cancelar"
+                                        type="button"
+                                        onClick={() => { setShowDuracao(false) }}
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button
+                                        className="cancelar"
+                                        type="button"
+                                        onClick={addToPrescriptions}
+                                        disabled={isCalculateDisabled()}
+                                    >
+                                        Continuar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </form>
         </div>
