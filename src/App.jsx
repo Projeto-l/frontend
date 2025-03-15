@@ -13,6 +13,7 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Receita from "./pages/Receita.jsx";
 import Calculator from './pages/Calculator.jsx';
+import CadastroReceita from "./pages/CadastroReceita.jsx";
 
 function App() {  
   const location = useLocation();
@@ -36,6 +37,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/receita" element={<Receita />} />
           <Route path="/calculator" element={<Calculator/>}/>
+          <Route path="/cadastroReceita" element={<CadastroReceita/>}/>
       </Routes>
     </>
   )

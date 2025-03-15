@@ -1,0 +1,64 @@
+/* ----------- CadastroReceita.css ----------- */
+
+/* Container geral da receita (o "quadrado" maior) */
+.prescription-container {
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  /* Lista de itens (vários medicamentos) */
+  .items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 16px 0;
+  }
+  
+  /* Cartão menor de cada item */
+  .item-card {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 16px;
+    border: 1px solid #ddd;
+    position: relative; /* Caso queira posicionar um botão de remover */
+  }
+  
+  /* Título dentro do cartão do item */
+  .item-card h2 {
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  /* Botão de remover item */
+  .remove-item {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  
+  /* Ao pairar no botão de remover */
+  .remove-item:hover {
+    background-color: #ccc;
+  }
+  
+  /* Botão/link para adicionar mais um item (mais um medicamento) */
+  .add-item {
+    display: inline-flex;
+    align-items: center;
+    margin: 12px 0;
+    cursor: pointer;
+    font-weight: 600;
+    gap: 6px;
+  }
+  
+  .add-item:hover {
+    color: #0077b6;
+  }
+  
