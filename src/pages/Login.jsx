@@ -74,17 +74,18 @@ const Login = () => {
   }
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    formEntries.handleChange(event);
-    const errorsList = validate(formEntries.values);
-    setErrors(errorsList);
+    navigate("/");
+    // event.preventDefault();
+    // formEntries.handleChange(event);
+    // const errorsList = validate(formEntries.values);
+    // setErrors(errorsList);
 
-    if (Object.keys(errorsList).length !== 0) { //se houverem erros nos campos
-      return null;
-    } else {
-      submitToApi(event);
-    }
-    setErrors(null); // Limpa os erros antes de nova tentativa
+    // if (Object.keys(errorsList).length !== 0) { //se houverem erros nos campos
+    //   return null;
+    // } else {
+    //   submitToApi(event);
+    // }
+    // setErrors(null); // Limpa os erros antes de nova tentativa
   };
 
   const submitToApi = async () => {
