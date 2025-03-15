@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '../components/Icons';
-import {
-    Copy,
-} from "lucide-react";
+import { Copy } from "lucide-react"; // Import extra se necessário
 import '../styles/Calculator.css';
-import { areCookiesMutableInCurrentPhase } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 
 export function CalculatorCard(props) {
     const navigate = useNavigate();
@@ -229,18 +226,55 @@ export function CalculatorCard(props) {
         }
     }
 
-    const addToPrescriptions = () => {
-
-    }
-
-    const addDuracao = () => {
+    function addDuracao() {
         setShowDuracao(true);
     }
 
-    const copyToClipBoard = () => {
+    // [NOVO] Faz o POST para /api/prescriptions com o medicamento calculado
+    async function addToPrescriptions() {
+        const { intervalo, dias } = formEntries.values;
+        if (!calculo) return;
+        const numericDose = parseFloat(calculo.replace(/[^\d.]/g, '')) || 0;
+        const freqNumber = parseFloat(intervalo) || 0;
+        const totalDays = parseInt(dias, 10) || 0;
+        const totalDose = numericDose * (24 / freqNumber) * totalDays;
+
+        const body = {
+            userId: "b00047d8-dbb5-439f-82e5-ce08b29735a2",
+            patientName: "John Doe",
+            items: [
+                {
+                    medicationId: medicamentoSelecionado?.medicationId || "",
+                    notes: "Take after meal",
+                    dosage: numericDose,
+                    frequency: `every ${freqNumber} hours`,
+                    duration: totalDays,
+                    totalDose: totalDose
+                }
+            ]
+        };
+
+        try {
+            const response = await fetch("http://localhost:8080/api/prescriptions", {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+            if (!response.ok) {
+                throw new Error("Erro ao cadastrar a prescrição");
+            }
+            alert("Prescrição cadastrada com sucesso!");
+            setShowDuracao(false);
+        } catch (error) {
+            console.error(error);
+            alert("Erro ao cadastrar a prescrição.");
+        }
+    }
+
+    function copyToClipBoard() {
         navigator.clipboard.writeText(calculo);
         alert('Resultado copiado para a área de transferência!');
-    };
+    }
 
     return (
         <div className="cadastro-page">
