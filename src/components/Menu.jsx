@@ -13,11 +13,13 @@ export function Menu(props) {
     }, []);
 
     const isTabMode = () => {
-        var retorno = false;
-        if (chrome.extension.getViews({ type: "popup" }).length === 0) {
-           retorno = true;
+        if (chrome) {
+            var retorno = false;
+            if (chrome.extension.getViews({ type: "popup" }).length === 0) {
+                retorno = true;
+            }
+            return retorno;
         }
-       return retorno;
     };
 
     const navigate = useNavigate();
@@ -28,12 +30,16 @@ export function Menu(props) {
     };
 
     const openInNewTab = () => {
-        chrome.runtime.sendMessage({ action: "openTab" });
+        if (chrome) {
+            chrome.runtime.sendMessage({ action: "openTab" });
+        }
     };
 
     const backToPopup = () => {
-        chrome.runtime.sendMessage({ action: "openPopup" });
-        window.close();
+        if (chrome) {
+            chrome.runtime.sendMessage({ action: "openPopup" });
+            window.close();
+        }
     };
 
     return (
