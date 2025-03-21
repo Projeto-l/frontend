@@ -240,7 +240,7 @@ export function CalculatorCard(props) {
         const totalDose = numericDose * (24 / freqNumber) * totalDays;
 
         const body = {
-            userId: "b00047d8-dbb5-439f-82e5-ce08b29735a2",
+            userId: "cebea5cf-7453-43d9-8b00-d646d41d3eba",
             patientName: "John Doe",
             items: [
                 {

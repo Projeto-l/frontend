@@ -3,6 +3,7 @@ import '../styles/Home.css'
 import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "../components/Icons.jsx";
 import { Header } from "../components/Header.jsx";
+import { Footer } from '../components/Footer.jsx';
 import { RecentCard } from "../components/RecentCard.jsx";
 
 const Home = () => {
@@ -37,6 +38,7 @@ const Home = () => {
                 </div>
             </div>
             <RecentCard />
+            <Footer></Footer>
         </div>
     );
 };

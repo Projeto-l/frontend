@@ -6,6 +6,7 @@ import { useState, useContext } from "react";
 import { Icon } from "../components/Icons.jsx";
 import { Link, useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header.jsx';
+import { Footer } from '../components/Footer.jsx';
 // import fakeLoginApi from '../components/fakeAuthApi';
 // import AuthContext from "../context/AuthContext.jsx";
 
@@ -188,6 +189,7 @@ const Login = () => {
             </form>
           </div>
         </div>
+        <Footer></Footer>
       </div>
     </div>
   );
