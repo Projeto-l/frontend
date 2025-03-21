@@ -37,7 +37,7 @@ function addPasteButton(input) {
     buttonContainer.style.position = 'absolute';
     buttonContainer.style.right = '10px';
     buttonContainer.style.top = '5px';
-    buttonContainer.style.zIndex = '10px';
+    buttonContainer.style.zIndex = '10';
     const shadow = buttonContainer.attachShadow({ mode: 'open' });
 
     const pasteButton = document.createElement('button');
