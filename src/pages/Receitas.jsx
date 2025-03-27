@@ -1,5 +1,5 @@
 import { Header } from "../components/Header.jsx";
-import { Footer } from '../components/Footer.jsx';
+import { Footer } from "../components/Footer.jsx";
 import { ReceitasCard } from "../components/ReceitasCard.jsx";
 
 const Receitas = () => {
