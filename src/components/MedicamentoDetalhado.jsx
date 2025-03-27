@@ -44,20 +44,30 @@ export default function MedicamentoDetalhado({
     }
   };
 
+  /*
   const detalhes = {
     dosagem: "4 gotas (100mg)",
     frequencia: "Uma vez por dia",
     duracao: "30 dias",
   };
+  */
+
+  const medicationName = medicamento?.nome || "Medicamento";
+  const dosage = medicamento?.dosagem
+    ? medicamento?.dosagem
+    : "Não especificado";
+  const frequency = medicamento?.frequencia || "Não especificado";
+  const duration = medicamento?.duracao
+    ? medicamento?.duracao
+    : "Não especificado";
+  const notes = medicamento?.observacoes || "";
 
   return (
     <div className="medicamento-detalhado">
       <div className="medicamento-item-container">
         <div className="medicamento-item">
           <button className="medicamento-botao" onClick={onVoltar}>
-            <span className="medicamento-nome">
-              {medicamento ? medicamento.nome : "Paracetamol"}
-            </span>
+            <span className="medicamento-nome">{medicationName}</span>
             <ChevronUp className="icon" />
           </button>
         </div>
@@ -72,11 +82,11 @@ export default function MedicamentoDetalhado({
         </div>
         <div className="detalhe-conteudo">
           <div className="detalhe-titulo">Dosagem</div>
-          <div className="detalhe-subtitulo">{detalhes.dosagem}</div>
+          <div className="detalhe-subtitulo">{dosage}</div>
         </div>
         <button
           className="detalhe-copiar"
-          onClick={() => copyToClipboard(detalhes.dosagem, "dosagem")}
+          onClick={() => copyToClipboard(dosage, "dosagem")}
         >
           {copiedStates.dosagem ? (
             <Check className="icon icon-success" />
@@ -92,11 +102,11 @@ export default function MedicamentoDetalhado({
         </div>
         <div className="detalhe-conteudo">
           <div className="detalhe-titulo">Frequência</div>
-          <div className="detalhe-subtitulo">{detalhes.frequencia}</div>
+          <div className="detalhe-subtitulo">{frequency}</div>
         </div>
         <button
           className="detalhe-copiar"
-          onClick={() => copyToClipboard(detalhes.frequencia, "frequencia")}
+          onClick={() => copyToClipboard(frequency, "frequencia")}
         >
           {copiedStates.frequencia ? (
             <Check className="icon icon-success" />
@@ -112,11 +122,11 @@ export default function MedicamentoDetalhado({
         </div>
         <div className="detalhe-conteudo">
           <div className="detalhe-titulo">Duração</div>
-          <div className="detalhe-subtitulo">{detalhes.duracao}</div>
+          <div className="detalhe-subtitulo">{duration}</div>
         </div>
         <button
           className="detalhe-copiar"
-          onClick={() => copyToClipboard(detalhes.duracao, "duracao")}
+          onClick={() => copyToClipboard(duration, "duracao")}
         >
           {copiedStates.duracao ? (
             <Check className="icon icon-success" />
@@ -134,6 +144,7 @@ export default function MedicamentoDetalhado({
             className="notas-textarea"
             rows={3}
             id="instrucoes"
+            defaultValue={notes}
           ></textarea>
           <div className="notas-acoes">
             <button
