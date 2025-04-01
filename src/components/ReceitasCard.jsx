@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { RecentItem } from "./RecentItem.jsx";
 import "../styles/RecentCard.css";
 
 export function ReceitasCard() {
+  const navigate = useNavigate();
+
   const body = [
     {
       prescription: {
@@ -98,15 +102,24 @@ export function ReceitasCard() {
     }, []);
   */
 
+  const handlePrescriptionClick = (prescriptionData) => {
+    navigate("/receita", {
+      state: { prescriptionData },
+    });
+  };
+
   return (
     <div className="recent-card">
       <h2 className="recent-card-title">Recentes</h2>
       <div className="recent-items-container">
         {prescriptions.map((prescription, index) => (
           <RecentItem
+            key={prescription.prescription.prescriptionId}
+            type="receita"
             date={formatDate(prescription.prescription.creationDate)}
             time={formatTime(prescription.prescription.creationDate)}
             medications={prescription.prescription.prescriptionMedications}
+            onClick={() => handlePrescriptionClick(prescription)}
           />
         ))}
       </div>

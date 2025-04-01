@@ -2,9 +2,13 @@ import React from "react";
 import { Icon } from "./Icons";
 import "../styles/RecentItem.css";
 
-export function RecentItem({ type, date, time, medications }) {
+export function RecentItem({ type, date, time, medications, onClick }) {
   return (
-    <div className="recent-item">
+    <div
+      className="recent-item"
+      onClick={onClick}
+      style={{ cursor: onClick ? "pointer" : "default" }}
+    >
       <div>
         {type === "calculo" && (
           <div className="tag">

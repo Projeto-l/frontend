@@ -4,19 +4,18 @@ import { HashRouter } from "react-router-dom";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
+import SaveRoute from "./utils/SaveRoute.jsx";
+import RestoreRoute from "./utils/RestoreRoute.jsx";
 
-import SaveRoute from './utils/SaveRoute.jsx';
-import RestoreRoute from './utils/RestoreRoute.jsx';
-
-import Home from './pages/Home.jsx';
-import Login from './pages/Login.jsx';
-import Register from './pages/Register.jsx';
+import Home from "./pages/Home.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
 import Receita from "./pages/Receita.jsx";
 import Receitas from "./pages/Receitas.jsx";
-import Calculator from './pages/Calculator.jsx';
+import Calculator from "./pages/Calculator.jsx";
 import CadastroReceita from "./pages/CadastroReceita.jsx";
 
-function App() {  
+function App() {
   const location = useLocation();
 
   useEffect(() => {
@@ -24,25 +23,24 @@ function App() {
 
     if (lastRoute && lastRoute !== location.pathname) {
       localStorage.removeItem("formData");
-      alert("Dados do formulário removidos ao mudar de rota");      
+      alert("Dados do formulário removidos ao mudar de rota");
     }
-    
   }, [location.pathname]);
   return (
     <>
-      <RestoreRoute/>
-      <SaveRoute/>
+      <RestoreRoute />
+      <SaveRoute />
       <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/receita" element={<Receita />} />
-          <Route path="/receitas" element={<Receitas />} />
-          <Route path="/calculator" element={<Calculator/>}/>
-          <Route path="/cadastroReceita" element={<CadastroReceita/>}/>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/receita" element={<Receita />} />
+        <Route path="/receitas" element={<Receitas />} />
+        <Route path="/calculator" element={<Calculator />} />
+        <Route path="/cadastroReceita" element={<CadastroReceita />} />
       </Routes>
     </>
-  )
+  );
 }
 
 export default App;
