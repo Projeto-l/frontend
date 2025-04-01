@@ -62,3 +62,28 @@ input:checked+.switch:before {
     font-size: 16px;
     color: #333;
 }
+
+.help_button svg {
+    fill: var(--primary-color);
+}
+
+.help_button:hover > svg {
+    fill: var(--terciary-color);
+    background-color: var(--primary-color);
+    border-radius: 50%;
+}
+
+.help_text {
+    display: none;
+    position: absolute;
+    background-color: var(--terciary-color);
+    width: 200px;
+    padding: 5px;
+    border-radius: 5px;
+    bottom: 40px;
+    right: 105px;
+}
+
+.help_button:hover~.help_text {
+    display: block;
+}
