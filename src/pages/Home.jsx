@@ -27,7 +27,7 @@ const Home = () => {
                         <Icon name="calculator"></Icon>
                         <span>Calculadora</span>
                     </button>
-                    <button className="menu-button" onClick={() => {navigateTo("/cadastroReceita")}} >
+                    <button className="menu-button" onClick={() => {navigateTo("/receita")}} >
                         <Icon name="prescription"></Icon>
                         <span>Nova Receita</span>
                     </button>

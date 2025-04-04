@@ -4,6 +4,7 @@
   --terciary-color: #B9C6AE;
   --sucess-text: #498056;
   --sucess-backgorund: #D4EDDA;
+  --white: #f4f4f4;
   /* --secundary-color: #ecd444; yellow */
   /* --terciary-color: #808080; gray */
 }
@@ -63,4 +64,13 @@ q:before, q:after {
 table {
     border-collapse: collapse;
     border-spacing: 0;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 38px 0px;
+    height: fit-content;
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MedicamentoDetalhado from "./MedicamentoDetalhado";
 import {
   AlertTriangle,
@@ -13,12 +13,16 @@ import "../styles/ReceitaCard.css";
 
 export function ReceitaCard() {
   const location = useLocation();
+  const navigate = useNavigate();
   const prescriptionData = location.state?.prescriptionData;
 
   const [prescriptions, setPrescriptions] = useState();
 
   const [medicamentoExpandido, setMedicamentoExpandido] = useState(null);
-  const [medicamentos, setMedicamentos] = useState([]);
+  const [medicamentos, setMedicamentos] = useState([
+    { id: 1, nome: "Amoxicilina" },
+    { id: 2, nome: "Azitromicina" },
+  ]);
 
   /*useEffect(() => {
     const fetchDados = async () => {
@@ -34,6 +38,18 @@ export function ReceitaCard() {
     fetchDados();
   }, []);
   */
+
+  useEffect(() => {
+    if (chrome) {
+      chrome.storage.local.get(["isEditing"]).then((result) => {
+        if (result.isEditing === true) {
+          chrome.storage.local.set({ isEditing: false }).then(() => {
+            navigate("/editor", { state: { medicamentos } });
+          });
+        }
+      });
+    }
+  }, [medicamentos, navigate]);
 
   useEffect(() => {
     if (prescriptionData) {
@@ -197,7 +213,14 @@ export function ReceitaCard() {
             </button>
 
             <div className="acoes-container">
-              <button className="acao-botao">
+              <button
+                className="acao-botao"
+                onClick={() => {
+                  chrome.storage.local.set({ medicamentosParaEditar: medicamentos }).then(() => {
+                    chrome.runtime.sendMessage({ action: "openEditTab" });
+                  });
+                }}
+              >
                 <Printer className="icon-acao" />
                 Imprimir
               </button>

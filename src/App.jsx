@@ -14,6 +14,8 @@ import Receita from "./pages/Receita.jsx";
 import Receitas from "./pages/Receitas.jsx";
 import Calculator from "./pages/Calculator.jsx";
 import CadastroReceita from "./pages/CadastroReceita.jsx";
+import { ReceitaCard } from "./components/ReceitaCard";
+import Editor from "./pages/Editor.jsx";
 
 function App() {
   const location = useLocation();
@@ -38,6 +40,7 @@ function App() {
         <Route path="/receitas" element={<Receitas />} />
         <Route path="/calculator" element={<Calculator />} />
         <Route path="/cadastroReceita" element={<CadastroReceita />} />
+        <Route path="/editor" element={<Editor />} />
       </Routes>
     </>
   );
