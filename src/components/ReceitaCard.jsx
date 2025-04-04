@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import MedicamentoDetalhado from "./MedicamentoDetalhado";
 import {
   AlertTriangle,
@@ -8,115 +8,43 @@ import {
   Printer,
   Save,
   Trash2,
+  User,
 } from "lucide-react";
 import "../styles/ReceitaCard.css";
 
 export function ReceitaCard() {
-  const location = useLocation();
-  const prescriptionData = location.state?.prescriptionData;
-
-  const [prescriptions, setPrescriptions] = useState();
+  const { prescriptionId } = useParams();
+  const [prescription, setPrescription] = useState(null);
 
   const [medicamentoExpandido, setMedicamentoExpandido] = useState(null);
-  const [medicamentos, setMedicamentos] = useState([]);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  /*useEffect(() => {
-    const fetchDados = async () => {
-      try {
-        const resposta = await fetch("http://localhost:8080/api/prescriptions");
-        if (!resposta.ok) throw new Error("Erro ao buscar os dados");
-        const json = await resposta.json();
-        setPrescriptions(json);
-      } catch (erro) {
-        console.log(erro);
-      }
-    };
-    fetchDados();
-  }, []);
-  */
-
-  useEffect(() => {
-    if (prescriptionData) {
-      const medicamentosFormatados =
-        prescriptionData.prescription.prescriptionMedications.map((med) => ({
-          id: med.medication.medicationId,
-          nome: med.medication.name,
-          dosagem: med.dosage,
-          frequencia: med.frequency,
-          duracao: med.duration,
-          observacoes: med.notes,
-        }));
-
-      setMedicamentos(medicamentosFormatados);
-    } else {
-      // Dados padrão caso não haja prescrição
-      setMedicamentos([
-        { id: 1, nome: "Amoxicilina" },
-        { id: 2, nome: "Azitromicina" },
-      ]);
+  const fetchPrescription = async () => {
+    setIsLoading(true);
+    try {
+      const resposta = await fetch(
+        `http://localhost:8080/api/prescriptions/${prescriptionId}`
+      );
+      if (!resposta.ok) throw new Error("Erro ao buscar os dados");
+      const data = await resposta.json();
+      console.log("Dados recebidos:", data);
+      setPrescription(data);
+      setError(null);
+    } catch (erro) {
+      console.error(erro);
+      setError("Falha ao carregar os dados da receita");
+    } finally {
+      setIsLoading(false);
     }
-  }, [prescriptionData]);
-
-  const body = {
-    prescription: {
-      prescriptionId: "cbb954a5-23f5-4fc7-b0df-1871fc3c5a02",
-      user: {
-        userId: "b00047d8-dbb5-439f-82e5-ce08b29735a2",
-        name: "Dr. Alice",
-        email: "alice@example.com",
-        password: "hashed_password_1",
-        role: "PEDIATRICIAN",
-      },
-      patientName: "John Doe",
-      creationDate: "2025-03-12T19:17:02.7037629",
-      prescriptionMedications: [
-        {
-          id: {
-            prescriptionId: "cbb954a5-23f5-4fc7-b0df-1871fc3c5a02",
-            medicationId: "ad9f9ed4-e5ee-49e1-8749-61bd4ce445c6",
-          },
-          medication: {
-            medicationId: "ad9f9ed4-e5ee-49e1-8749-61bd4ce445c6",
-            name: "Paracetamol",
-            presentations: [],
-          },
-          notes: "Take after meal",
-          dosage: 250.0,
-          frequency: "every 8 hours",
-          duration: 7,
-        },
-        {
-          id: {
-            prescriptionId: "cbb954a5-23f5-4fc7-b0df-1871fc3c5a02",
-            medicationId: "1bfbebdd-1586-41b5-ae56-f6590c85c8b2",
-          },
-          medication: {
-            medicationId: "1bfbebdd-1586-41b5-ae56-f6590c85c8b2",
-            name: "Ibuprofeno",
-            presentations: [],
-          },
-          notes: "Take before bedtime",
-          dosage: 100.0,
-          frequency: "once a day",
-          duration: 5,
-        },
-      ],
-    },
-    interactions: [
-      {
-        medication1Id: "ad9f9ed4-e5ee-49e1-8749-61bd4ce445c6",
-        medication1Name: "Paracetamol",
-        medication2Id: "1bfbebdd-1586-41b5-ae56-f6590c85c8b2",
-        medication2Name: "Ibuprofeno",
-        description:
-          "Paracetamol e Ibuprofeno não devem ser administrados juntos devido ao risco aumentado de efeitos adversos.",
-      },
-    ],
   };
 
-  const [prescriptionMedications, setPrescriptionMedications] = useState(
-    body.prescription.prescriptionMedications
-  );
+  useEffect(() => {
+    if (prescriptionId) {
+      fetchPrescription();
+    }
+  }, [prescriptionId]);
 
   const toggleMedicamento = (id) => {
     if (medicamentoExpandido === id) {
@@ -126,65 +54,200 @@ export function ReceitaCard() {
     }
   };
 
-  const adicionarMedicamento = () => {
-    const novoId =
-      medicamentos.length > 0
-        ? Math.max(...medicamentos.map((m) => m.id)) + 1
-        : 1;
-    setMedicamentos([...medicamentos, { id: novoId, nome: "Paracetamol" }]);
-  };
-
   const removerMedicamento = (id) => {
-    setPrescriptionMedications(
-      prescriptionMedications.filter((m) => m.medication.medicationId !== id)
-    );
-    if (medicamentoExpandido === id) {
-      setMedicamentoExpandido(null);
+    if (prescription && prescription.prescriptionMedications) {
+      const updatedPrescription = {
+        ...prescription,
+        prescriptionMedications: prescription.prescriptionMedications.filter(
+          (m) => m.medication.medicationId !== id
+        ),
+      };
+
+      setPrescription(updatedPrescription);
+
+      if (medicamentoExpandido === id) {
+        setMedicamentoExpandido(null);
+      }
     }
   };
 
-  /*
-  const medicamentoAtual = prescriptionMedications.find(
+  const medicamentoAtual = prescription?.prescriptionMedications?.find(
     (m) => m.medication.medicationId === medicamentoExpandido
   );
-  */
 
-  const medicamentoAtual = medicamentos.find(
-    (m) => m.id === medicamentoExpandido
-  );
+  const salvarMedicamento = async (medicamentoAtualizado) => {
+    if (!prescription) return;
+
+    try {
+      setIsSaving(true);
+
+      console.log("Medicamento a ser atualizado:", medicamentoAtualizado);
+
+      if (!prescription.prescriptionMedications) {
+        console.error("prescriptionMedications não está definido");
+        return;
+      }
+
+      const updatedMedications = prescription.prescriptionMedications.map(
+        (m) => {
+          if (m.medication.medicationId === medicamentoAtualizado.id) {
+            return {
+              ...m,
+              notes: medicamentoAtualizado.observacoes || "",
+              dosage: Number.parseFloat(medicamentoAtualizado.dosagem) || 0,
+              frequency: medicamentoAtualizado.frequencia || "",
+              duration: Number.parseInt(medicamentoAtualizado.duracao) || 0,
+              totalDose: medicamentoAtualizado.totalDose || 0,
+              medication: {
+                ...m.medication,
+                name: medicamentoAtualizado.nome,
+              },
+            };
+          }
+          return m;
+        }
+      );
+
+      const updatedPrescription = {
+        ...prescription,
+        prescriptionMedications: updatedMedications,
+      };
+
+      setPrescription(updatedPrescription);
+
+      await salvarReceita(updatedPrescription);
+
+      setMedicamentoExpandido(null);
+    } catch (error) {
+      console.error("Erro ao salvar medicamento:", error);
+      alert(`Erro ao salvar medicamento: ${error.message}`);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const salvarReceita = async (prescriptionToSave = prescription) => {
+    if (!prescriptionToSave) return;
+
+    try {
+      setIsSaving(true);
+
+      const dataToSave = {
+        userId: prescriptionToSave.user.userId,
+        patientName: prescriptionToSave.patientName,
+        items: prescriptionToSave.prescriptionMedications.map((med) => ({
+          medicationId: med.medication.medicationId,
+          notes: med.notes || "",
+          dosage: med.dosage || 0,
+          frequency: med.frequency || "",
+          duration: med.duration || 0,
+          totalDose: med.totalDose || 0,
+        })),
+      };
+
+      const response = await fetch(
+        `http://localhost:8080/api/prescriptions/${prescriptionToSave.prescriptionId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSave),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Erro ao salvar: ${response.status}`);
+      }
+
+      const updatedData = await response.json();
+
+      await fetchPrescription();
+    } catch (error) {
+      console.error("Erro ao salvar a receita:", error);
+      alert(`Erro ao salvar a receita: ${error.message}`);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (isLoading) {
+    return <div className="loading">Carregando...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Erro: {error}</div>;
+  }
+
+  if (!prescription) {
+    return <div className="error">Nenhuma receita encontrada</div>;
+  }
 
   return (
     <main className="main-container">
       <div className="receita-container">
         <h1 className="receita-titulo">Receita</h1>
 
-        {medicamentoExpandido !== null ? (
+        <div className="patient-info">
+          <User className="patient-icon" />
+          <span className="patient-name">
+            Paciente:{" "}
+            <strong>{prescription.patientName || "Não especificado"}</strong>
+          </span>
+        </div>
+
+        {medicamentoExpandido !== null && medicamentoAtual ? (
           <MedicamentoDetalhado
-            medicamento={medicamentoAtual}
+            medicamento={{
+              id: medicamentoAtual.medication.medicationId || "",
+              nome: medicamentoAtual.medication.name || "",
+              observacoes: medicamentoAtual.notes || "",
+              dosagem: medicamentoAtual.dosage?.toString() || "",
+              frequencia: medicamentoAtual.frequency || "",
+              duracao: medicamentoAtual.duration?.toString() || "",
+              totalDose: medicamentoAtual.totalDose || 0,
+            }}
             onVoltar={() => setMedicamentoExpandido(null)}
             onRemover={() => removerMedicamento(medicamentoExpandido)}
+            onSave={salvarMedicamento}
           />
         ) : (
           <>
-            {medicamentos.map((medicamento) => (
-              <div key={medicamento.id} className="medicamento-item-container">
-                <div className="medicamento-item">
+            {prescription.prescriptionMedications &&
+            prescription.prescriptionMedications.length > 0 ? (
+              prescription.prescriptionMedications.map((medicamento) => (
+                <div
+                  key={medicamento.medication.medicationId}
+                  className="medicamento-item-container"
+                >
+                  <div className="medicamento-item">
+                    <button
+                      className="medicamento-botao"
+                      onClick={() =>
+                        toggleMedicamento(medicamento.medication.medicationId)
+                      }
+                    >
+                      <span className="medicamento-nome">
+                        {medicamento.medication.name || "Medicamento sem nome"}
+                      </span>
+                      <ChevronDown className="icon" />
+                    </button>
+                  </div>
                   <button
-                    className="medicamento-botao"
-                    onClick={() => toggleMedicamento(medicamento.id)}
+                    className="medicamento-remover"
+                    onClick={() =>
+                      removerMedicamento(medicamento.medication.medicationId)
+                    }
                   >
-                    <span className="medicamento-nome">{medicamento.nome}</span>
-                    <ChevronDown className="icon" />
+                    <Trash2 className="icon" />
                   </button>
                 </div>
-                <button
-                  className="medicamento-remover"
-                  onClick={() => removerMedicamento(medicamento.id)}
-                >
-                  <Trash2 className="icon" />
-                </button>
+              ))
+            ) : (
+              <div className="sem-medicamentos">
+                Nenhum medicamento na receita
               </div>
-            ))}
+            )}
 
             <div className="alerta-container">
               <button className="alerta-botao">
@@ -192,18 +255,18 @@ export function ReceitaCard() {
               </button>
             </div>
 
-            <button className="adicionar-botao" onClick={adicionarMedicamento}>
-              <Plus className="icon-plus" />
-            </button>
-
             <div className="acoes-container">
               <button className="acao-botao">
                 <Printer className="icon-acao" />
                 Imprimir
               </button>
-              <button className="acao-botao">
+              <button
+                className="acao-botao"
+                onClick={() => salvarReceita()}
+                disabled={isSaving}
+              >
                 <Save className="icon-acao" />
-                Salvar
+                {isSaving ? "Salvando..." : "Salvar"}
               </button>
             </div>
           </>

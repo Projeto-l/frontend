@@ -35,13 +35,31 @@
   font-size: 0.8rem;
 }
 
+.detalhe-input {
+  width: 100%;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 0.3rem;
+  padding: 0.15rem 0.35rem;
+  font-size: 0.8rem;
+  color: #7b7979;
+  outline: none;
+  height: 1.5rem;
+}
+
+.detalhe-acoes {
+  display: flex;
+  align-items: center;
+}
+
+.detalhe-editar,
 .detalhe-copiar {
-  padding: 0.75rem;
+  padding: 0.5rem;
   background: none;
   border: none;
   cursor: pointer;
-  height: 3rem;
-  width: 3rem;
+  height: 2.5rem;
+  width: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,6 +86,14 @@
   padding-right: 2.5rem;
 }
 
+.notas-texto {
+  color: #6b7280;
+  font-size: 0.8rem;
+  margin: 0.5rem 0;
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
+
 .notas-textarea {
   width: 100%;
   background-color: transparent;
@@ -79,10 +105,15 @@
   margin: 0.5rem 0;
 }
 
-.notas-copiar {
+.notas-acoes {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
+  display: flex;
+}
+
+.notas-editar,
+.notas-copiar {
   padding: 0.25rem;
   background: none;
   border: none;
@@ -114,4 +145,14 @@
   height: 1.25rem;
   width: 1.25rem;
   margin-right: 0.5rem;
+}
+
+.icon {
+  height: 1.25rem;
+  width: 1.25rem;
+  color: #6b7280;
+}
+
+.icon-success {
+  color: #10b981;
 }

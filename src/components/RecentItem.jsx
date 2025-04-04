@@ -2,7 +2,14 @@ import React from "react";
 import { Icon } from "./Icons";
 import "../styles/RecentItem.css";
 
-export function RecentItem({ type, date, time, medications, onClick }) {
+export function RecentItem({
+  type,
+  date,
+  time,
+  medications,
+  patientName,
+  onClick,
+}) {
   return (
     <div
       className="recent-item"
@@ -29,6 +36,13 @@ export function RecentItem({ type, date, time, medications, onClick }) {
         </span>
         <span className="recent-item-date-normal">{time}</span>
       </div>
+
+      {patientName && (
+        <div className="patient-name">
+          <span className="patient-label">Paciente: </span>
+          <span className="patient-value">{patientName}</span>
+        </div>
+      )}
 
       {medications.map((medication, index) => (
         <React.Fragment key={index}>
