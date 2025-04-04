@@ -9,17 +9,21 @@ import {
   Save,
   Trash2,
   User,
+  FileText,
+  ExternalLink,
 } from "lucide-react";
 import "../styles/ReceitaCard.css";
 
 export function ReceitaCard() {
   const { prescriptionId } = useParams();
   const [prescription, setPrescription] = useState(null);
+  const [interactions, setInteractions] = useState([]);
 
   const [medicamentoExpandido, setMedicamentoExpandido] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRemoving, setIsRemoving] = useState(false);
 
   const fetchPrescription = async () => {
     setIsLoading(true);
@@ -30,7 +34,12 @@ export function ReceitaCard() {
       if (!resposta.ok) throw new Error("Erro ao buscar os dados");
       const data = await resposta.json();
       console.log("Dados recebidos:", data);
-      setPrescription(data);
+
+      if (data.prescription) {
+        setPrescription(data.prescription);
+        setInteractions(data.interactions || []);
+      }
+
       setError(null);
     } catch (erro) {
       console.error(erro);
@@ -54,8 +63,12 @@ export function ReceitaCard() {
     }
   };
 
-  const removerMedicamento = (id) => {
-    if (prescription && prescription.prescriptionMedications) {
+  const removerMedicamento = async (id) => {
+    if (!prescription || !prescription.prescriptionMedications) return;
+
+    try {
+      setIsRemoving(true);
+
       const updatedPrescription = {
         ...prescription,
         prescriptionMedications: prescription.prescriptionMedications.filter(
@@ -68,12 +81,28 @@ export function ReceitaCard() {
       if (medicamentoExpandido === id) {
         setMedicamentoExpandido(null);
       }
+
+      await salvarReceita(updatedPrescription);
+
+      console.log("Medicamento removido com sucesso");
+    } catch (error) {
+      console.error("Erro ao remover medicamento:", error);
+      alert(`Erro ao remover medicamento: ${error.message}`);
+
+      await fetchPrescription();
+    } finally {
+      setIsRemoving(false);
     }
   };
 
   const medicamentoAtual = prescription?.prescriptionMedications?.find(
     (m) => m.medication.medicationId === medicamentoExpandido
   );
+
+  const getBulaUrl = (medicationName) => {
+    const normalizedName = medicationName.toLowerCase().replace(/\s+/g, "-");
+    return `https://consultas.anvisa.gov.br/#/bulario/q/?nomeProduto=${normalizedName}`;
+  };
 
   const salvarMedicamento = async (medicamentoAtualizado) => {
     if (!prescription) return;
@@ -249,11 +278,54 @@ export function ReceitaCard() {
               </div>
             )}
 
-            <div className="alerta-container">
-              <button className="alerta-botao">
-                <AlertTriangle className="icon-alerta" />
-              </button>
-            </div>
+            {interactions.length > 0 && (
+              <div className="alerta-container">
+                {interactions.map((interaction, index) => (
+                  <div key={index} className="alerta-item">
+                    <div className="alerta-icone">
+                      <AlertTriangle className="icon-alerta" />
+                    </div>
+                    <div className="alerta-mensagem">
+                      {interaction.description}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {prescription.prescriptionMedications &&
+              prescription.prescriptionMedications.length > 0 && (
+                <div className="bulas-container">
+                  <h2 className="bulas-titulo">Bulas dos Medicamentos</h2>
+                  <div className="bulas-grid">
+                    {prescription.prescriptionMedications.map((medicamento) => {
+                      const bulaUrl = getBulaUrl(medicamento.medication.name);
+
+                      return (
+                        <a
+                          key={medicamento.medication.medicationId}
+                          href={bulaUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bula-card"
+                        >
+                          <div className="bula-icon">
+                            <FileText className="icon-bula" />
+                          </div>
+                          <div className="bula-info">
+                            <span className="bula-nome">
+                              {medicamento.medication.name}
+                            </span>
+                            <span className="bula-link">
+                              Ver bula <ExternalLink size={14} />
+                            </span>
+                          </div>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
             <div className="acoes-container">
               <button className="acao-botao">
