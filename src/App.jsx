@@ -35,6 +35,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/receita" element={<Receita />} />
+        <Route path="/receita/:prescriptionId" element={<Receita />} />
         <Route path="/receitas" element={<Receitas />} />
         <Route path="/calculator" element={<Calculator />} />
         <Route path="/cadastroReceita" element={<CadastroReceita />} />

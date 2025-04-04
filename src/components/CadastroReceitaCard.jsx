@@ -7,7 +7,7 @@ import "../styles/CadastroReceita.css"; // CSS adicional
 
 export function CadastroReceitaCard() {
   // ID fixo do usuário (ajuste conforme necessário)
-  const fixedUserId = "b00047d8-dbb5-439f-82e5-ce08b29735a2";
+  const fixedUserId = "f095b2a9-2084-4c10-a2bb-1c16ec7c99e7";
 
   const navigate = useNavigate();
 

@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   Calendar,
@@ -9,6 +11,7 @@ import {
   Pill,
   Save,
   Trash2,
+  Edit2,
 } from "lucide-react";
 import "../styles/MedicamentoDetalhado.css";
 
@@ -16,6 +19,7 @@ export default function MedicamentoDetalhado({
   medicamento,
   onVoltar,
   onRemover,
+  onSave,
 }) {
   const [copiedStates, setCopiedStates] = useState({
     dosagem: false,
@@ -23,6 +27,33 @@ export default function MedicamentoDetalhado({
     duracao: false,
     instrucoes: false,
   });
+
+  const [editingStates, setEditingStates] = useState({
+    dosagem: false,
+    frequencia: false,
+    duracao: false,
+    instrucoes: false,
+  });
+
+  const [editedValues, setEditedValues] = useState({
+    dosagem: medicamento?.dosagem || "Não especificado",
+    frequencia: medicamento?.frequencia || "Não especificado",
+    duracao: medicamento?.duracao || "Não especificado",
+    observacoes: medicamento?.observacoes || "",
+  });
+
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    if (medicamento) {
+      setEditedValues({
+        dosagem: medicamento.dosagem || "Não especificado",
+        frequencia: medicamento.frequencia || "Não especificado",
+        duracao: medicamento.duracao || "Não especificado",
+        observacoes: medicamento.observacoes || "",
+      });
+    }
+  }, [medicamento]);
 
   const copyToClipboard = async (text, field) => {
     try {
@@ -44,30 +75,61 @@ export default function MedicamentoDetalhado({
     }
   };
 
-  /*
-  const detalhes = {
-    dosagem: "4 gotas (100mg)",
-    frequencia: "Uma vez por dia",
-    duracao: "30 dias",
+  const toggleEditing = (field) => {
+    setEditingStates((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
   };
-  */
 
-  const medicationName = medicamento?.nome || "Medicamento";
-  const dosage = medicamento?.dosagem
-    ? medicamento?.dosagem
-    : "Não especificado";
-  const frequency = medicamento?.frequencia || "Não especificado";
-  const duration = medicamento?.duracao
-    ? medicamento?.duracao
-    : "Não especificado";
-  const notes = medicamento?.observacoes || "";
+  const handleInputChange = (field, value) => {
+    setEditedValues((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSave = async () => {
+    if (!medicamento) {
+      console.error("Medicamento não definido");
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+
+      const updatedMedicamento = {
+        ...medicamento,
+        dosagem: editedValues.dosagem,
+        frequencia: editedValues.frequencia,
+        duracao: editedValues.duracao,
+        observacoes: editedValues.observacoes,
+        nome: medicamento.nome,
+      };
+
+      if (onSave) {
+        await onSave(updatedMedicamento);
+      }
+    } catch (error) {
+      console.error("Erro ao salvar o medicamento:", error);
+      alert(`Erro ao salvar o medicamento: ${error.message}`);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  if (!medicamento) {
+    return <div className="erro">Medicamento não encontrado</div>;
+  }
 
   return (
     <div className="medicamento-detalhado">
       <div className="medicamento-item-container">
         <div className="medicamento-item">
           <button className="medicamento-botao" onClick={onVoltar}>
-            <span className="medicamento-nome">{medicationName}</span>
+            <span className="medicamento-nome">
+              {medicamento.nome || "Medicamento"}
+            </span>
             <ChevronUp className="icon" />
           </button>
         </div>
@@ -82,18 +144,41 @@ export default function MedicamentoDetalhado({
         </div>
         <div className="detalhe-conteudo">
           <div className="detalhe-titulo">Dosagem</div>
-          <div className="detalhe-subtitulo">{dosage}</div>
-        </div>
-        <button
-          className="detalhe-copiar"
-          onClick={() => copyToClipboard(dosage, "dosagem")}
-        >
-          {copiedStates.dosagem ? (
-            <Check className="icon icon-success" />
+          {editingStates.dosagem ? (
+            <input
+              type="text"
+              className="detalhe-input"
+              value={editedValues.dosagem}
+              onChange={(e) => handleInputChange("dosagem", e.target.value)}
+              autoFocus
+            />
           ) : (
-            <Copy className="icon" />
+            <div className="detalhe-subtitulo">{editedValues.dosagem}</div>
           )}
-        </button>
+        </div>
+
+        <div className="detalhe-acoes">
+          <button
+            className="detalhe-editar"
+            onClick={() => toggleEditing("dosagem")}
+          >
+            {editingStates.dosagem ? (
+              <Check className="icon icon-success" />
+            ) : (
+              <Edit2 className="icon" />
+            )}
+          </button>
+          <button
+            className="detalhe-copiar"
+            onClick={() => copyToClipboard(editedValues.dosagem, "dosagem")}
+          >
+            {copiedStates.dosagem ? (
+              <Check className="icon icon-success" />
+            ) : (
+              <Copy className="icon" />
+            )}
+          </button>
+        </div>
       </div>
 
       <div className="detalhe-item">
@@ -102,18 +187,42 @@ export default function MedicamentoDetalhado({
         </div>
         <div className="detalhe-conteudo">
           <div className="detalhe-titulo">Frequência</div>
-          <div className="detalhe-subtitulo">{frequency}</div>
-        </div>
-        <button
-          className="detalhe-copiar"
-          onClick={() => copyToClipboard(frequency, "frequencia")}
-        >
-          {copiedStates.frequencia ? (
-            <Check className="icon icon-success" />
+          {editingStates.frequencia ? (
+            <input
+              type="text"
+              className="detalhe-input"
+              value={editedValues.frequencia}
+              onChange={(e) => handleInputChange("frequencia", e.target.value)}
+              autoFocus
+            />
           ) : (
-            <Copy className="icon" />
+            <div className="detalhe-subtitulo">{editedValues.frequencia}</div>
           )}
-        </button>
+        </div>
+        <div className="detalhe-acoes">
+          <button
+            className="detalhe-editar"
+            onClick={() => toggleEditing("frequencia")}
+          >
+            {editingStates.frequencia ? (
+              <Check className="icon icon-success" />
+            ) : (
+              <Edit2 className="icon" />
+            )}
+          </button>
+          <button
+            className="detalhe-copiar"
+            onClick={() =>
+              copyToClipboard(editedValues.frequencia, "frequencia")
+            }
+          >
+            {copiedStates.frequencia ? (
+              <Check className="icon icon-success" />
+            ) : (
+              <Copy className="icon" />
+            )}
+          </button>
+        </div>
       </div>
 
       <div className="detalhe-item">
@@ -122,37 +231,75 @@ export default function MedicamentoDetalhado({
         </div>
         <div className="detalhe-conteudo">
           <div className="detalhe-titulo">Duração</div>
-          <div className="detalhe-subtitulo">{duration}</div>
-        </div>
-        <button
-          className="detalhe-copiar"
-          onClick={() => copyToClipboard(duration, "duracao")}
-        >
-          {copiedStates.duracao ? (
-            <Check className="icon icon-success" />
+          {editingStates.duracao ? (
+            <input
+              type="text"
+              className="detalhe-input"
+              value={editedValues.duracao}
+              onChange={(e) => handleInputChange("duracao", e.target.value)}
+              autoFocus
+            />
           ) : (
-            <Copy className="icon" />
+            <div className="detalhe-subtitulo">{editedValues.duracao}</div>
           )}
-        </button>
+        </div>
+        <div className="detalhe-acoes">
+          <button
+            className="detalhe-editar"
+            onClick={() => toggleEditing("duracao")}
+          >
+            {editingStates.duracao ? (
+              <Check className="icon icon-success" />
+            ) : (
+              <Edit2 className="icon" />
+            )}
+          </button>
+          <button
+            className="detalhe-copiar"
+            onClick={() => copyToClipboard(editedValues.duracao, "duracao")}
+          >
+            {copiedStates.duracao ? (
+              <Check className="icon icon-success" />
+            ) : (
+              <Copy className="icon" />
+            )}
+          </button>
+        </div>
       </div>
 
       <div className="notas-container">
         <div className="notas-titulo">Notas</div>
         <div className="notas-conteudo">
           <div className="notas-label">Instruções</div>
-          <textarea
-            className="notas-textarea"
-            rows={3}
-            id="instrucoes"
-            defaultValue={notes}
-          ></textarea>
+          {editingStates.instrucoes ? (
+            <textarea
+              className="notas-textarea"
+              rows={3}
+              value={editedValues.observacoes}
+              onChange={(e) => handleInputChange("observacoes", e.target.value)}
+              autoFocus
+            ></textarea>
+          ) : (
+            <div className="notas-texto">
+              {editedValues.observacoes || "Não especificado"}
+            </div>
+          )}
           <div className="notas-acoes">
             <button
+              className="notas-editar"
+              onClick={() => toggleEditing("instrucoes")}
+            >
+              {editingStates.instrucoes ? (
+                <Check className="icon icon-success" />
+              ) : (
+                <Edit2 className="icon" />
+              )}
+            </button>
+            <button
               className="notas-copiar"
-              onClick={() => {
-                const texto = document.getElementById("instrucoes").value;
-                copyToClipboard(texto, "instrucoes");
-              }}
+              onClick={() =>
+                copyToClipboard(editedValues.observacoes, "instrucoes")
+              }
             >
               {copiedStates.instrucoes ? (
                 <Check className="icon icon-success" />
@@ -169,9 +316,9 @@ export default function MedicamentoDetalhado({
           <ArrowLeft className="icon-acao" />
           Voltar para receita
         </button>
-        <button className="acao-botao">
+        <button className="acao-botao" onClick={handleSave} disabled={isSaving}>
           <Save className="icon-acao" />
-          Salvar
+          {isSaving ? "Salvando..." : "Salvar"}
         </button>
       </div>
     </div>
