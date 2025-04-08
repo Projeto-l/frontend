@@ -21,11 +21,9 @@ export function Header(props) {
     
 
     return (
-        <div>
-            <div className={`header`} >
-                <Menu menu={``} isHome={props.isHome}/>
-            </div>
-        </div>           
+        <div className={`header`} >
+            <Menu menu={``} isHome={props.isHome}/>
+        </div>   
     )
 }
 

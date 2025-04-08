@@ -2,12 +2,14 @@ import { Header } from "../components/Header.jsx";
 import { Footer } from "../components/Footer.jsx";
 import { ReceitaCard } from "../components/ReceitaCard.jsx";
 
-const Receita = () => {
+const Receita = (props) => {
   return (
-    <div>
+    <div className={props.tabMode ? 'page tab_mode' : 'page'}>
       <Header isHome={false}></Header>
-      <ReceitaCard />
-      <Footer></Footer>
+      <div className="content">
+        <ReceitaCard />
+        <Footer></Footer>
+      </div>
     </div>
   );
 };

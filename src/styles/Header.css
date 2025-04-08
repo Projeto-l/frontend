@@ -1,7 +1,12 @@
 
 .header {
-    padding: 20px;
-    width: 100vw;
+    padding: 20px 0;
+    margin: auto;
+    width: 90%;
+}
+
+.tab_mode .header {
+    width: 87vw;
 }
 
 .header .back {

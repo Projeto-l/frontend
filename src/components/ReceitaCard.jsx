@@ -226,7 +226,7 @@ export function ReceitaCard() {
   }
 
   return (
-    <main className="main-container">
+    <main className="card main-container">
       <div className="receita-container">
         <h1 className="receita-titulo">Receita</h1>
 

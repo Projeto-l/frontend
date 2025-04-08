@@ -64,3 +64,17 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
 }
+
+.page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 60px;
+}
+
+.tab_mode {
+    width: 320px;
+    margin: auto;
+}

@@ -26,6 +26,14 @@
     grid-row-gap: 20px;
 }
 
+.tab_mode .recent-card {
+    width: 100%;
+}
+
+.tab_mode .recent-items-container {
+    width: unset;
+}
+
 @media (max-width: 828px) {
     .recent-card {
         width: 371px;

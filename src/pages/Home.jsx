@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import '../styles/Home.css'
 import { Link, useNavigate } from "react-router-dom";
 import { Icon } from "../components/Icons.jsx";
@@ -6,7 +6,7 @@ import { Header } from "../components/Header.jsx";
 import { Footer } from '../components/Footer.jsx';
 import { RecentCard } from "../components/RecentCard.jsx";
 
-const Home = () => {
+const Home = (props) => {
 
     const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ const Home = () => {
     }
 
     return (
-        <div className="home">
+        <div className={props.tabMode ? 'page tab_mode' : 'page'}>
             <Header isHome={true}></Header>
             <div className="menu-card">
                 <h2 className="menu-card-title">
