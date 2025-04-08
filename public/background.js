@@ -9,3 +9,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       chrome.action.openPopup();
     }
   });
+
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+  if (message.action === "openEditTab") {
+    chrome.tabs.create({ url: chrome.runtime.getURL("index.html") });
+    await chrome.storage.local.set({ isEditing: true });
+  }
+});

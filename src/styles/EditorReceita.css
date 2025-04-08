@@ -1,0 +1,75 @@
+.editor_card {
+    margin: auto;
+}
+
+.editor-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.editor-header h1 {
+    color: #333;
+    margin: 0;
+}
+
+.imprimir-botao {
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.imprimir-botao:hover {
+    background-color: var(--terciary-color);
+}
+
+.editor-content {
+    min-height: 400px;
+}
+
+.ql-container {
+    min-height: 300px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.quill {
+    background-color: #fff;
+}
+
+@media print {
+    @page {
+        size: auto;
+        /* auto is the initial value */
+        margin: 0mm;
+        /* this affects the margin in the printer settings */
+    }
+
+    .editor-header {
+        display: none;
+    }
+
+    .ql-toolbar {
+        display: none;
+    }
+
+    .editor-container {
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+    }
+}

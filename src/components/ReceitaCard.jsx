@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import MedicamentoDetalhado from "./MedicamentoDetalhado";
 import {
   AlertTriangle,
@@ -15,6 +15,7 @@ import {
 import "../styles/ReceitaCard.css";
 
 export function ReceitaCard() {
+  const navigate = useNavigate();
   const { prescriptionId } = useParams();
   const [prescription, setPrescription] = useState(null);
   const [interactions, setInteractions] = useState([]);
@@ -48,6 +49,18 @@ export function ReceitaCard() {
       setIsLoading(false);
     }
   };
+  
+  useEffect(() => {
+    if (chrome) {
+      chrome.storage.local.get(["isEditing"]).then((result) => {
+        if (result.isEditing === true) {
+          chrome.storage.local.set({ isEditing: false }).then(() => {
+            navigate("/editor", { state: { prescription } });
+          });
+        }
+      });
+    }
+  }, [prescription, navigate]);
 
   useEffect(() => {
     if (prescriptionId) {
@@ -328,7 +341,14 @@ export function ReceitaCard() {
               )}
 
             <div className="acoes-container">
-              <button className="acao-botao">
+              <button 
+                className="acao-botao"
+                onClick={() => {
+                  chrome.storage.local.set({ prescription: prescription }).then(() => {
+                    chrome.runtime.sendMessage({ action: "openEditTab" });
+                  });
+                }}
+              >
                 <Printer className="icon-acao" />
                 Imprimir
               </button>
