@@ -37,6 +37,7 @@ export function CalculatorCard(props) {
             peso: props.data?.peso || '',
             intervalo: props.data?.intervalo || '',
             dias: props.data?.dias || '',
+            nome: props.data?.nome || '',
         });
     }, [props.data]);
 
@@ -62,6 +63,7 @@ export function CalculatorCard(props) {
             peso: '',
             intervalo: '',
             dias: '',
+            nome: '',
         }
     });
 
@@ -232,7 +234,7 @@ export function CalculatorCard(props) {
 
     // [NOVO] Faz o POST para /api/prescriptions com o medicamento calculado
     async function addToPrescriptions() {
-        const { intervalo, dias } = formEntries.values;
+        const { intervalo, dias, nome } = formEntries.values;
         if (!calculo) return;
         const numericDose = parseFloat(calculo.replace(/[^\d.]/g, '')) || 0;
         const freqNumber = parseFloat(intervalo) || 0;
@@ -240,14 +242,14 @@ export function CalculatorCard(props) {
         const totalDose = numericDose * (24 / freqNumber) * totalDays;
 
         const body = {
-            userId: "cebea5cf-7453-43d9-8b00-d646d41d3eba",
-            patientName: "John Doe",
+            userId: "1b9d1712-48a6-4a18-80fa-096d5fd2aaff",
+            patientName: nome,
             items: [
                 {
                     medicationId: medicamentoSelecionado?.medicationId || "",
-                    notes: "Take after meal",
+                    notes: "",
                     dosage: numericDose,
-                    frequency: `every ${freqNumber} hours`,
+                    frequency: `a cada ${freqNumber} horas`,
                     duration: totalDays,
                     totalDose: totalDose
                 }
@@ -263,11 +265,12 @@ export function CalculatorCard(props) {
             if (!response.ok) {
                 throw new Error("Erro ao cadastrar a prescrição");
             }
-            alert("Prescrição cadastrada com sucesso!");
+            console.log("Prescrição cadastrada com sucesso!", response);
             setShowDuracao(false);
+            navigate('/receitas');
         } catch (error) {
             console.error(error);
-            alert("Erro ao cadastrar a prescrição.");
+            console.log("Erro ao cadastrar a prescrição.");
         }
     }
 
@@ -464,6 +467,17 @@ export function CalculatorCard(props) {
                     {showDuracao && (
                         <div className="modal">
                             <div className="card dias_tramento_modal">
+                                <h1>Paciente</h1>
+                                <label htmlFor="dias">Nome</label>
+                                <div className="field">
+                                    <input
+                                        placeholder="Nome do Paciente"
+                                        name="nome"
+                                        id="nome"
+                                        onChange={formEntries.handleChange}
+                                        value={formEntries.values.nome}
+                                    />
+                                </div>
                                 <h1>Duração</h1>
                                 <label htmlFor="dias">Dias de Tratamento</label>
                                 <div className="field">
