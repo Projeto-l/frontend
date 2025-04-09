@@ -198,6 +198,9 @@ export function CalculatorCard(props) {
                 textoFinal = `Dose: ${mgTotal.toFixed(2)} mg`;
             }
             setCalculo(textoFinal);
+
+            saveCalculation(medicamentoSelecionado, apresentacaoSelecionada, values, textoFinal);
+
         } catch (error) {
             console.error("Erro ao calcular a dose:", error);
             setCalculo("Erro ao calcular a dose");
@@ -277,6 +280,30 @@ export function CalculatorCard(props) {
     function copyToClipBoard() {
         navigator.clipboard.writeText(calculo);
         alert('Resultado copiado para a área de transferência!');
+    }
+
+    function saveCalculation(medicamentoSelecionado, apresentacaoSelecionada, values, textoFinal) {
+        const calculoData = {
+            type: "calculo",
+            date: new Date().toLocaleDateString("pt-BR"),
+            time: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+            medications: [{
+                medication: {
+                    name: medicamentoSelecionado.name
+                },
+                details: formatPresentationLabel(apresentacaoSelecionada),
+                dosage: textoFinal,
+                schedule: values.intervalo ? `a cada ${values.intervalo} horas` : null
+            }]
+        };
+
+        const calculosExistentes = JSON.parse(localStorage.getItem('calculos') || '[]');
+        
+        calculosExistentes.unshift(calculoData);
+
+        const calculosLimitados = calculosExistentes.slice(0, 5);
+
+        localStorage.setItem('calculos', JSON.stringify(calculosLimitados));
     }
 
     return (
