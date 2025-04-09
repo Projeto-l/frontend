@@ -49,7 +49,7 @@ export function ReceitasCard() {
     <div className="recent-card">
       <h2 className="recent-card-title">Recentes</h2>
       <div className="recent-items-container">
-        {prescriptions.map((prescription, index) => (
+        {prescriptions.reverse().map((prescription, index) => (
           <RecentItem
             key={prescription.prescriptionId}
             type="receita"
