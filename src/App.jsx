@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { HashRouter } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { AuthProvider } from './context/AuthContext.jsx';
+import PrivateRoute from './routes/PrivateRoute';
 
 import SaveRoute from "./utils/SaveRoute.jsx";
 import RestoreRoute from "./utils/RestoreRoute.jsx";
@@ -44,17 +46,21 @@ function App() {
     <>
       <RestoreRoute />
       <SaveRoute />
-      <Routes>
-        <Route path="/" element={<Home tabMode={tabMode} />} />
-        <Route path="/login" element={<Login tabMode={tabMode} />} />
-        <Route path="/register" element={<Register tabMode={tabMode} />} />
-        <Route path="/receita" element={<Receita tabMode={tabMode} />} />
-        <Route path="/receita/:prescriptionId" element={<Receita tabMode={tabMode} />} />
-        <Route path="/receitas" element={<Receitas tabMode={tabMode} />} />
-        <Route path="/calculator" element={<Calculator tabMode={tabMode} />} />
-        <Route path="/cadastroReceita" element={<CadastroReceita tabMode={tabMode} />} />
-        <Route path="/editor" element={<Editor tabMode={tabMode} />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route element={<PrivateRoute/>}>
+            <Route path="/" element={<Home tabMode={tabMode} />} />
+            <Route path="/receita" element={<Receita tabMode={tabMode} />} />
+            <Route path="/receita/:prescriptionId" element={<Receita tabMode={tabMode} />} />
+            <Route path="/receitas" element={<Receitas tabMode={tabMode} />} />
+            <Route path="/calculator" element={<Calculator tabMode={tabMode} />} />
+            <Route path="/cadastroReceita" element={<CadastroReceita tabMode={tabMode} />} />
+            <Route path="/editor" element={<Editor tabMode={tabMode} />} />
+          </Route>
+          <Route path="/login" element={<Login tabMode={tabMode} />} />
+          <Route path="/register" element={<Register tabMode={tabMode} />} />
+        </Routes>
+      </AuthProvider>
     </>
   );
 }

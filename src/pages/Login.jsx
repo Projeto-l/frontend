@@ -8,12 +8,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header.jsx';
 import { Footer } from '../components/Footer.jsx';
 // import fakeLoginApi from '../components/fakeAuthApi';
-// import AuthContext from "../context/AuthContext.jsx";
+import AuthContext from "../context/AuthContext.jsx";
 
 const Login = () => {
 
   const [errors, setErrors] = useState({})
-//   const { login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,43 +75,49 @@ const Login = () => {
   }
 
   const handleSubmit = async (event) => {
-    navigate("/");
-    // event.preventDefault();
-    // formEntries.handleChange(event);
-    // const errorsList = validate(formEntries.values);
-    // setErrors(errorsList);
+    event.preventDefault();
+    formEntries.handleChange(event);
+    const errorsList = validate(formEntries.values);
+    setErrors(errorsList);
 
-    // if (Object.keys(errorsList).length !== 0) { //se houverem erros nos campos
-    //   return null;
-    // } else {
-    //   submitToApi(event);
-    // }
-    // setErrors(null); // Limpa os erros antes de nova tentativa
+    if (Object.keys(errorsList).length !== 0) { //se houverem erros nos campos
+      return null;
+    } else {
+      submitToApi(event);
+    }
+    setErrors(null); // Limpa os erros antes de nova tentativa
   };
 
-  const submitToApi = async () => {
+  const submitToApi = async (event) => {
     const formData = new FormData(event.target);
     const data = {};
     formData.forEach((value, key) => {
       data[key] = value;
     });
+    console.log(formEntries.values);
+
+    let username = formEntries.values.email;
+    let password = formEntries.values.senha;
+
     try {
-      const url = `${import.meta.env.VITE_API_URL}/auth/login`;
+      const url = "http://localhost:8080/api/v1/auth";
       const response = await fetch(url, {
-        method: 'PUT',
-        mode: "cors",
+        method: 'POST',
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          username,
+          password
+        }),
       });
 
       const json = await response.json();
 
       if (response.ok) {
-        // login(json);  // Chama a função login com o token fake
+        login(json.accessToken);
         console.log('Post enviado com sucesso!');
-        window.location.href = "/";
+        navigate('/');
       } else {
         console.error('Email ou senha incorretos:', response.statusText);
         setErrors({ login: 'Email ou senha incorretos' });
@@ -125,7 +131,7 @@ const Login = () => {
   return (
     <div className="page">
       <div className="content">
-        <Header isHome={false}></Header>
+        <Header isHome={true}></Header>
         <div className="loginPage">
           <div className="card form_card LoginCard">
             <form onSubmit={handleSubmit} className="LoginForm">

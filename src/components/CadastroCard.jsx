@@ -16,15 +16,10 @@ export function CadastroCard(props) {
             props.data = savedData;
         }
         formEntries.setValues({
-            papel: props.data?.papel?.toLowerCase() || '',
+            role: 'PEDIATRICIAN',
             email: props.data?.email || '',
-            nome: props.data?.nome || '',
-            senha: props.data?.senha || '',
-            telefone: props.data?.telefone || '',
-            endereco: props.data?.endereco || '',
-            numeroEnd: props.data?.numeroEndereco || '',
-            bairro: props.data?.bairro || '',
-            cidade: props.data?.cidade || '',
+            name: props.data?.name || '',
+            password: props.data?.password || '',
             status: props.data?.status || '',
         });
     }, []);
@@ -50,15 +45,10 @@ export function CadastroCard(props) {
 
     const formEntries = useFormEntries({
         initialValues: {
-            papel: props.data?.papel?.toLowerCase() || '',
+            role: 'PEDIATRICIAN',
             email: props.data?.email || '',
-            nome: props.data?.nome || '',
-            senha: props.data?.senha || '',
-            telefone: props.data?.telefone || '',
-            endereco: props.data?.endereco || '',
-            numeroEnd: props.data?.numeroEndereco || '',
-            bairro: props.data?.bairro || '',
-            cidade: props.data?.cidade || '',
+            name: props.data?.name || '',
+            password: props.data?.password || '',
             status: props.data?.status || '',
         }
     });
@@ -66,7 +56,7 @@ export function CadastroCard(props) {
     const validate = (values) => {
         const errors = {};
 
-        if (values.papel === '') {
+        if (values.role === '') {
             errors.tipo = 'Selecione o tipo da sua conta';
         }
 
@@ -78,42 +68,18 @@ export function CadastroCard(props) {
             errors.email = 'Insira um email válido';
         }
 
-        if (values.nome.trim() === '') {
-            errors.nome = 'Insira seu nome';
+        if (values.name.trim() === '') {
+            errors.name = 'Insira seu nome';
         }
 
-        if (values.senha.length === 0) {
-            errors.senha = 'Insira uma senha com mais de 8 caracteres';
+        if (values.password.length === 0) {
+            errors.password = 'Insira uma senha com mais de 8 caracteres';
         }
 
         if (values.telefone.trim() === '') {
             errors.telefone = 'Insira o telefone';
         } else if (values.telefone.length < 11) {
             errors.telefone = 'Isira um telefone válido';
-        }
-
-        if (values.endereco.length === 0) {
-            errors.endereco = 'Insira um endereço';
-        } else if (values.endereco.trim().length === 0) {
-            errors.endereco = 'Insira um endereço válido';
-        }
-
-        if (values.numeroEnd.trim() === '') {
-            errors.numero = 'Insira o número';
-        } else if (isNaN(parseInt(values.numeroEnd))) {
-            errors.numero = 'Insira um número válido';
-        }
-
-        if (values.bairro.length === 0) {
-            errors.bairro = 'Insira um bairro';
-        } else if (values.bairro.trim().length === 0) {
-            errors.bairro = 'Insira um bairro válido';
-        }
-
-        if (values.cidade.length === 0) {
-            errors.cidade = 'Insira sua cidade';
-        } else if (values.cidade.trim().length === 0) {
-            errors.cidade = 'Insira uma cidade válida';
         }
 
         return errors;
@@ -128,7 +94,6 @@ export function CadastroCard(props) {
         if (Object.keys(errorsList).length !== 0) { //se houverem erros nos campos
             return null;
         } else {
-            navigate("/login");
             localStorage.setItem("formData", "");
             submitToApi(event);
         }
@@ -137,18 +102,19 @@ export function CadastroCard(props) {
     const submitToApi = async (event) => {
         const formData = new FormData(event.target);
         const data = {};
-        formData.forEach((value, key) => {
-            data[key] = value;
+
+        Object.keys(formEntries.values).forEach(chave => {
+            data[chave] = formEntries.values[chave];
         });
 
         try {
-            const url = `${import.meta.env.VITE_API_URL}/auth/register`;
+            const url = "http://localhost:8080/api/users";
             const response = await fetch(url, {
                 method: 'POST',
-                mode: "cors",
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: 'include',
                 body: JSON.stringify(data),
             });
 
@@ -157,7 +123,7 @@ export function CadastroCard(props) {
 
             if (response.ok) {
                 console.log('Post enviado com sucesso!');
-                window.location.href = "/login";
+                navigate('/login');
             } else {
                 console.error('Email ou telefone já cadastrados', response.statusText);
                 setErrors({ registro: 'Email ou telefone já cadastrados' });
@@ -179,7 +145,7 @@ export function CadastroCard(props) {
                             <p>{formEntries.values.status}</p>
                         </div>
                     }
-                    <fieldset>
+                    {/* <fieldset>
                         <h2>Tipo de conta</h2>
                         {errors.tipo &&
                             <div className="error">
@@ -188,19 +154,19 @@ export function CadastroCard(props) {
                             </div>
                         }
                         <div className="radio-container">
-                            <input disabled={props.onlyView ? true : undefined} type="radio" id="estudante" name="papel" value="estudante" onClick={formEntries.handleChange} checked={formEntries.values.papel === "estudante"} />
+                            <input disabled={props.onlyView ? true : undefined} type="radio" id="estudante" name="role" value="estudante" onClick={formEntries.handleChange} checked={formEntries.values.role === "estudante"} />
                             <label htmlFor="estudante">Estudante</label>
                             <span className="radio"></span>
                             <Icon name="check"></Icon>
                         </div>
                         <div className="radio-container">
-                            <input disabled={props.onlyView ? true : undefined} type="radio" id="medico-generalista" name="papel" value="medico-generalista" onClick={formEntries.handleChange} checked={formEntries.values.papel === "medico-generalista"} />
+                            <input disabled={props.onlyView ? true : undefined} type="radio" id="medico-generalista" name="role" value="medico-generalista" onClick={formEntries.handleChange} checked={formEntries.values.role === "medico-generalista"} />
                             <label htmlFor="medico-generalista">Médico Generalista</label>
                             <span className="radio"></span>
                             <Icon name="check"></Icon>
                         </div>
                         <div className="radio-container">
-                            <input disabled={props.onlyView ? true : undefined} type="radio" id="pediatra" name="papel" value="pediatra" onClick={formEntries.handleChange} checked={formEntries.values.papel === "pediatra"} />
+                            <input disabled={props.onlyView ? true : undefined} type="radio" id="pediatra" name="role" value="pediatra" onClick={formEntries.handleChange} checked={formEntries.values.role === "pediatra"} />
                             <label htmlFor="pediatra">Pediatra</label>
                             <span className="radio"></span>
                             <Icon name="check"></Icon>
@@ -208,32 +174,32 @@ export function CadastroCard(props) {
                         {props.onlyView &&
                             <div>
                                 <div className="radio-container">
-                                    <input disabled={props.onlyView ? true : undefined} type="radio" id="admin_basico" name="papel" value="admin_basico" onClick={formEntries.handleChange} checked={formEntries.values.papel === "admin_basico"} />
+                                    <input disabled={props.onlyView ? true : undefined} type="radio" id="admin_basico" name="role" value="admin_basico" onClick={formEntries.handleChange} checked={formEntries.values.role === "admin_basico"} />
                                     <label htmlFor="pediatra">Admin Básico</label>
                                     <span className="radio"></span>
                                     <Icon name="check"></Icon>
                                 </div>
                                 <div className="radio-container">
-                                    <input disabled={props.onlyView ? true : undefined} type="radio" id="admin_geral" name="papel" value="admin_geral" onClick={formEntries.handleChange} checked={formEntries.values.papel === "admin_geral"} />
+                                    <input disabled={props.onlyView ? true : undefined} type="radio" id="admin_geral" name="role" value="admin_geral" onClick={formEntries.handleChange} checked={formEntries.values.role === "admin_geral"} />
                                     <label htmlFor="pediatra">Admin Geral</label>
                                     <span className="radio"></span>
                                     <Icon name="check"></Icon>
                                 </div>
                             </div>
                         }
-                    </fieldset>
-                    {errors.nome &&
+                    </fieldset> */}
+                    {errors.name &&
                         <div className="error">
                             <Icon name="error"></Icon>
-                            <p>{errors.nome}</p>
+                            <p>{errors.name}</p>
                         </div>
                     }
-                    {formEntries.values.nome &&
+                    {formEntries.values.name &&
                         <label htmlFor="">Nome</label>
                     }
                     <div className="field">
                         <Icon name="user"></Icon>
-                        <input disabled={props.onlyView ? true : undefined} type="text" placeholder="Nome" name="nome" id="nome" value={formEntries.values.nome} onChange={formEntries.handleChange} />
+                        <input disabled={props.onlyView ? true : undefined} type="text" placeholder="Nome" name="name" id="name" value={formEntries.values.name} onChange={formEntries.handleChange} />
                     </div>
                     {errors.email &&
                         <div className="error">
@@ -248,19 +214,19 @@ export function CadastroCard(props) {
                         <Icon name="email"></Icon>
                         <input disabled={props.onlyView ? true : undefined} placeholder="Email" name="email" id="email" value={formEntries.values.email} onChange={formEntries.handleChange} />
                     </div>
-                    {errors.senha &&
+                    {errors.password &&
                         <div className="error">
                             <Icon name="error"></Icon>
-                            <p>{errors.senha}</p>
+                            <p>{errors.password}</p>
                         </div>
                     }
-                    {!props.onlyView && formEntries.values.senha &&
+                    {!props.onlyView && formEntries.values.password &&
                         <label htmlFor="">Senha</label>
                     }
                     {!props.onlyView &&
                         <div className="field">
                             <Icon name="passwd"></Icon>
-                            <input disabled={props.onlyView ? true : undefined} type="password" placeholder="Senha" name="senha" id="senha" onChange={formEntries.handleChange} value={formEntries.values.senha} />
+                            <input disabled={props.onlyView ? true : undefined} type="password" placeholder="Senha" name="password" id="password" onChange={formEntries.handleChange} value={formEntries.values.password} />
                         </div>}
                     {errors.telefone &&
                         <div className="error">
