@@ -27,7 +27,7 @@ export function RecentCard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/prescriptions");
+        const response = await fetch("3.142.149.185:8080/api/prescriptions");
         if (!response.ok) throw new Error("Erro ao buscar receitas");
         const prescriptions = await response.json();
 
