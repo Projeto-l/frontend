@@ -165,69 +165,57 @@ export function CalculatorCard(props) {
   }
 
   async function calculate() {
-    const values = formEntries.values;
-    if (!medicamentoSelecionado || !apresentacaoSelecionada || !values.dose) {
-      setCalculo("Erro: Medicamento, apresentação ou dose não selecionados.");
-      return;
-    }
-    let calculationType = "";
-    if (values.medicamento === "mgKgDose") {
-      calculationType = "mg/kg/dose";
-    } else if (values.medicamento === "mgKgDia") {
-      calculationType = "mg/kg/day";
-    }
-    const payload = {
-      medicationId: medicamentoSelecionado.medicationId,
-      presentationId: apresentacaoSelecionada.idPresentation,
-      calculationType,
-      standardDose: Number(values.dose),
-      weight: values.peso ? Number(values.peso) : null,
-      interval: values.intervalo ? Number(values.intervalo) : null,
-    };
-    try {
-      const response = await fetch(
-        "http://3.142.149.185:8080/api/dose-calculation",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+        const values = formEntries.values;
+        if (!medicamentoSelecionado || !apresentacaoSelecionada || !values.dose) {
+            setCalculo("Erro: Medicamento, apresentação ou dose não selecionados.");
+            return;
         }
-      );
-      if (!response.ok) {
-        throw new Error("Erro na API de cálculo");
-      }
-      const json = await response.json();
-      const mgTotal = json.calculatedDose;
-      let textoFinal = "";
-      if (apresentacaoSelecionada.mgPerTablet) {
-        const comprimidos = mgTotal / apresentacaoSelecionada.mgPerTablet;
-        textoFinal = `Dose: ${comprimidos.toFixed(2)} comprimidos`;
-      } else if (
-        apresentacaoSelecionada.mgPerMl &&
-        apresentacaoSelecionada.mlPerDrop
-      ) {
-        const volume = mgTotal / apresentacaoSelecionada.mgPerMl;
-        const gotas = volume / apresentacaoSelecionada.mlPerDrop;
-        textoFinal = `Dose: ${gotas.toFixed(2)} gotas`;
-      } else if (apresentacaoSelecionada.mgPerMl) {
-        const volume = mgTotal / apresentacaoSelecionada.mgPerMl;
-        textoFinal = `Dose: ${volume.toFixed(2)} mL`;
-      } else {
-        textoFinal = `Dose: ${mgTotal.toFixed(2)} mg`;
-      }
-      setCalculo(textoFinal);
+        let calculationType = '';
+        if (values.medicamento === 'mgKgDose') {
+            calculationType = 'mg/kg/dose';
+        } else if (values.medicamento === 'mgKgDia') {
+            calculationType = 'mg/kg/day';
+        }
+        const payload = {
+            medicationId: medicamentoSelecionado.medicationId,
+            presentationId: apresentacaoSelecionada.idPresentation,
+            calculationType,
+            standardDose: Number(values.dose),
+            weight: values.peso ? Number(values.peso) : null,
+            interval: values.intervalo ? Number(values.intervalo) : null
+        };
+        try {
+            const response = await fetch("http://3.142.149.185:8080/api/dose-calculation", {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+            });
+            if (!response.ok) {
+                throw new Error("Erro na API de cálculo");
+            }
+            const json = await response.json();
+            const mgTotal = json.calculatedDose;
+            let textoFinal = '';
+            if (apresentacaoSelecionada.mgPerTablet) {
+                textoFinal = `Dose: ${mgTotal} comprimidos`;
+            } else if (apresentacaoSelecionada.mgPerMl && apresentacaoSelecionada.mlPerDrop) {
+                textoFinal = `Dose: ${mgTotal} gotas`;
+            } else if (apresentacaoSelecionada.mgPerMl) {
+                const volume = mgTotal / apresentacaoSelecionada.mgPerMl;
+                textoFinal = `Dose: ${mgTotal} mL`;
+            } else {
+                textoFinal = `Dose: ${mgTotal} mg`;
+            }
+            setCalculo(textoFinal);
 
-      saveCalculation(
-        medicamentoSelecionado,
-        apresentacaoSelecionada,
-        values,
-        textoFinal
-      );
-    } catch (error) {
-      console.error("Erro ao calcular a dose:", error);
-      setCalculo("Erro ao calcular a dose");
+            saveCalculation(medicamentoSelecionado, apresentacaoSelecionada, values, textoFinal);
+
+        } catch (error) {
+            console.error("Erro ao calcular a dose:", error);
+            setCalculo("Erro ao calcular a dose");
+        }
     }
-  }
+
 
   function isCalculateDisabled() {
     const { medicamento, dose, peso, intervalo } = formEntries.values;
