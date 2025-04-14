@@ -191,17 +191,14 @@ export function CalculatorCard(props) {
             const mgTotal = json.calculatedDose;
             let textoFinal = '';
             if (apresentacaoSelecionada.mgPerTablet) {
-                const comprimidos = mgTotal / apresentacaoSelecionada.mgPerTablet;
-                textoFinal = `Dose: ${comprimidos.toFixed(2)} comprimidos`;
+                textoFinal = `Dose: ${mgTotal} comprimidos`;
             } else if (apresentacaoSelecionada.mgPerMl && apresentacaoSelecionada.mlPerDrop) {
-                const volume = mgTotal / apresentacaoSelecionada.mgPerMl;
-                const gotas = volume / apresentacaoSelecionada.mlPerDrop;
-                textoFinal = `Dose: ${gotas.toFixed(2)} gotas`;
+                textoFinal = `Dose: ${mgTotal} gotas`;
             } else if (apresentacaoSelecionada.mgPerMl) {
                 const volume = mgTotal / apresentacaoSelecionada.mgPerMl;
-                textoFinal = `Dose: ${volume.toFixed(2)} mL`;
+                textoFinal = `Dose: ${mgTotal} mL`;
             } else {
-                textoFinal = `Dose: ${mgTotal.toFixed(2)} mg`;
+                textoFinal = `Dose: ${mgTotal} mg`;
             }
             setCalculo(textoFinal);
 
