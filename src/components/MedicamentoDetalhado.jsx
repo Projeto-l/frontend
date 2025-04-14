@@ -118,6 +118,33 @@ export default function MedicamentoDetalhado({
     }
   };
 
+  const getUnitLabel = (field, value) => {
+    if (field === "dosagem") {
+      const numericPart = Number.parseFloat(value);
+      if (isNaN(numericPart)) return "mg";
+      return numericPart === 1 ? "mg" : "mg";
+    } else if (field === "frequencia") {
+      return "por dia";
+    } else if (field === "duracao") {
+      const numericPart = Number.parseFloat(value);
+      if (isNaN(numericPart)) return "dias";
+      return numericPart === 1 ? "dia" : "dias";
+    }
+    return "";
+  };
+
+  const renderValueWithUnit = (field, value) => {
+    if (value === "Não especificado") return value;
+
+    const unitLabel = getUnitLabel(field, value);
+    return (
+      <span className="value-container">
+        <span className="value-text">{value}</span>{" "}
+        <span className="unit-label">{unitLabel}</span>
+      </span>
+    );
+  };
+
   if (!medicamento) {
     return <div className="erro">Medicamento não encontrado</div>;
   }
@@ -145,15 +172,20 @@ export default function MedicamentoDetalhado({
         <div className="detalhe-conteudo">
           <div className="detalhe-titulo">Dosagem</div>
           {editingStates.dosagem ? (
-            <input
-              type="text"
-              className="detalhe-input"
-              value={editedValues.dosagem}
-              onChange={(e) => handleInputChange("dosagem", e.target.value)}
-              autoFocus
-            />
+            <div className="input-with-unit">
+              <input
+                type="text"
+                className="detalhe-input"
+                value={editedValues.dosagem}
+                onChange={(e) => handleInputChange("dosagem", e.target.value)}
+                autoFocus
+              />
+              <span className="input-unit">mg</span>
+            </div>
           ) : (
-            <div className="detalhe-subtitulo">{editedValues.dosagem}</div>
+            <div className="detalhe-subtitulo">
+              {renderValueWithUnit("dosagem", editedValues.dosagem)}
+            </div>
           )}
         </div>
 
@@ -188,15 +220,22 @@ export default function MedicamentoDetalhado({
         <div className="detalhe-conteudo">
           <div className="detalhe-titulo">Frequência</div>
           {editingStates.frequencia ? (
-            <input
-              type="text"
-              className="detalhe-input"
-              value={editedValues.frequencia}
-              onChange={(e) => handleInputChange("frequencia", e.target.value)}
-              autoFocus
-            />
+            <div className="input-with-unit">
+              <input
+                type="text"
+                className="detalhe-input"
+                value={editedValues.frequencia}
+                onChange={(e) =>
+                  handleInputChange("frequencia", e.target.value)
+                }
+                autoFocus
+              />
+              <span className="input-unit">por dia</span>
+            </div>
           ) : (
-            <div className="detalhe-subtitulo">{editedValues.frequencia}</div>
+            <div className="detalhe-subtitulo">
+              {renderValueWithUnit("frequencia", editedValues.frequencia)}
+            </div>
           )}
         </div>
         <div className="detalhe-acoes">
@@ -232,15 +271,20 @@ export default function MedicamentoDetalhado({
         <div className="detalhe-conteudo">
           <div className="detalhe-titulo">Duração</div>
           {editingStates.duracao ? (
-            <input
-              type="text"
-              className="detalhe-input"
-              value={editedValues.duracao}
-              onChange={(e) => handleInputChange("duracao", e.target.value)}
-              autoFocus
-            />
+            <div className="input-with-unit">
+              <input
+                type="text"
+                className="detalhe-input"
+                value={editedValues.duracao}
+                onChange={(e) => handleInputChange("duracao", e.target.value)}
+                autoFocus
+              />
+              <span className="input-unit">dias</span>
+            </div>
           ) : (
-            <div className="detalhe-subtitulo">{editedValues.duracao}</div>
+            <div className="detalhe-subtitulo">
+              {renderValueWithUnit("duracao", editedValues.duracao)}
+            </div>
           )}
         </div>
         <div className="detalhe-acoes">

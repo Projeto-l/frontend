@@ -34,7 +34,9 @@ export function ReceitasCard() {
   useEffect(() => {
     const fetchDados = async () => {
       try {
-        const resposta = await fetch("http://3.142.149.185:8080/api/prescriptions");
+        const resposta = await fetch(
+          "http://3.142.149.185:8080/api/prescriptions"
+        );
         if (!resposta.ok) throw new Error("Erro ao buscar os dados");
         const json = await resposta.json();
         setPrescriptions(json);
@@ -53,17 +55,22 @@ export function ReceitasCard() {
     <div className="recent-card">
       <h2 className="recent-card-title">Recentes</h2>
       <div className="recent-items-container">
-        {prescriptions.filter(item => item.user.userId === userId).reverse().map((prescription, index) => (
-          <RecentItem
-            key={prescription.prescriptionId}
-            type="receita"
-            date={formatDate(prescription.creationDate)}
-            time={formatTime(prescription.creationDate)}
-            medications={prescription.prescriptionMedications}
-            patientName={prescription.patientName}
-            onClick={() => handlePrescriptionClick(prescription.prescriptionId)}
-          />
-        ))}
+        {prescriptions
+          .filter((item) => item.user.userId === userId)
+          .reverse()
+          .map((prescription, index) => (
+            <RecentItem
+              key={prescription.prescriptionId}
+              type="receita"
+              date={formatDate(prescription.creationDate)}
+              time={formatTime(prescription.creationDate)}
+              medications={prescription.prescriptionMedications}
+              patientName={prescription.patientName}
+              onClick={() =>
+                handlePrescriptionClick(prescription.prescriptionId)
+              }
+            />
+          ))}
       </div>
     </div>
   );

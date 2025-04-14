@@ -1,0 +1,187 @@
+.modal-description {
+  margin-bottom: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.modal-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.modal-option-button {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-option-button:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.modal-option-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #ebeaea;
+  border-radius: 8px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.modal-option-text {
+  flex: 1;
+}
+
+.modal-option-text h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.modal-option-text p {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+}
+
+.modal-option-arrow {
+  color: #999;
+  flex-shrink: 0;
+}
+
+.existing-prescriptions {
+  margin: 20px 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.prescriptions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.prescription-item {
+  display: flex;
+  align-items: flex-start;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.prescription-item:hover {
+  background-color: #f0f0f0;
+}
+
+.prescription-item:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.prescription-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #ebeaea;
+  border-radius: 8px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.prescription-info {
+  flex: 1;
+}
+
+.prescription-info h3 {
+  font-size: 16px;
+  margin-bottom: 4px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.patient-icon {
+  margin-right: 6px;
+  display: inline-flex;
+  align-items: center;
+  color: #666;
+}
+
+.prescription-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.medication-count {
+  font-weight: 500;
+  font-size: 12px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pill-icon {
+  flex-shrink: 0;
+  color: #666;
+}
+
+.prescription-date {
+  font-size: 11px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.date-icon {
+  flex-shrink: 0;
+}
+
+.prescription-arrow {
+  color: #999;
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+.loading-text,
+.no-prescriptions {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.dias_tramento_modal {
+  width: 90%;
+  max-width: 450px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.dias_tramento_modal h1 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #333;
+}
