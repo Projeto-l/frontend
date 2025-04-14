@@ -11,7 +11,7 @@ export function CadastroCard(props) {
 
     useEffect(() => {
         var savedData = localStorage.getItem("formData");
-        if (savedData) {
+        if (savedData && !props.onlyView) {
             savedData = JSON.parse(savedData);
             props.data = savedData;
         }
@@ -22,7 +22,7 @@ export function CadastroCard(props) {
             password: props.data?.password || '',
             status: props.data?.status || '',
         });
-    }, []);
+    }, [props]);
 
     const useFormEntries = ({ initialValues }) => {
         const [values, setValues] = useState(initialValues);

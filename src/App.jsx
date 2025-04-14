@@ -17,6 +17,7 @@ import Receitas from "./pages/Receitas.jsx";
 import Calculator from "./pages/Calculator.jsx";
 import CadastroReceita from "./pages/CadastroReceita.jsx";
 import Editor from "./pages/Editor.jsx";
+import Perfil from "./pages/Perfil.jsx";
 
 function App() {
   const location = useLocation();
@@ -56,6 +57,7 @@ function App() {
             <Route path="/calculator" element={<Calculator tabMode={tabMode} />} />
             <Route path="/cadastroReceita" element={<CadastroReceita tabMode={tabMode} />} />
             <Route path="/editor" element={<Editor tabMode={tabMode} />} />
+            <Route path="/perfil" element={<Perfil tabMode={tabMode}/>}></Route>
           </Route>
           <Route path="/login" element={<Login tabMode={tabMode} />} />
           <Route path="/register" element={<Register tabMode={tabMode} />} />

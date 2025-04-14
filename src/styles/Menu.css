@@ -17,6 +17,47 @@
             color: var(--terciary-color);
         }
     }
+     
+    & .change_mode_user_wr {
+        display: flex;
+        gap: 10px;
+
+        & .user_wr {
+            position: relative;
+
+            & svg {
+                fill: var(--primary-color);
+                cursor: pointer;
+            }
+
+            & menu {
+                position: absolute;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                background-color: #F4F4F4;
+                padding: 10px;
+                border-radius: 13px;
+                opacity: 0;
+
+                & li {
+                    list-style: none;
+
+                    & button {
+                        border: none;
+                        color: var(--primary-color);
+                        font-size: 16px;
+                        font-weight: 600;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        & .user_wr:hover > menu {
+            opacity: 1;
+        }
+    }
 
     & .change_mode {
         background-color: unset;
