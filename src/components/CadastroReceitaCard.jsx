@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Icon } from "./Icons"; // Ajustar se necessário
+import AuthContext from "../context/AuthContext.jsx";
 import "../styles/CadastroCard.css";
 import "../styles/Geral.css";
 import "../styles/CadastroReceita.css"; // CSS adicional
 
 export function CadastroReceitaCard() {
-  // ID fixo do usuário (ajuste conforme necessário)
-  const fixedUserId = "f095b2a9-2084-4c10-a2bb-1c16ec7c99e7";
+  const { user } = useContext(AuthContext);
+  const user_obj = JSON.parse(user);
+  const userId = user_obj.userId;
 
   const navigate = useNavigate();
 
@@ -138,7 +140,7 @@ export function CadastroReceitaCard() {
     });
 
     const payload = {
-      userId: fixedUserId,
+      userId: userId,
       patientName,
       items: finalItems,
     };
@@ -163,8 +165,7 @@ export function CadastroReceitaCard() {
 
       if (!response.ok) {
         setSubmitError(
-          `Erro ao cadastrar a receita: ${response.status} - ${
-            data?.message || response.statusText
+          `Erro ao cadastrar a receita: ${response.status} - ${data?.message || response.statusText
           }`
         );
         return;

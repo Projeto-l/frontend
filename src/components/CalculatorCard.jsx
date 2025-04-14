@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '../components/Icons';
 import { Copy } from "lucide-react"; // Import extra se necessário
 import '../styles/Calculator.css';
+import AuthContext from '../context/AuthContext';
 
 export function CalculatorCard(props) {
     const navigate = useNavigate();
+
+    const { user } = useContext(AuthContext);
+    const user_obj = JSON.parse(user);
+
     const [errors, setErrors] = useState({});
     const [medicamentos, setMedicamentos] = useState([]);
     const [medicamentoSelecionado, setMedicamentoSelecionado] = useState(null);
@@ -15,6 +20,7 @@ export function CalculatorCard(props) {
     const [showDuracao, setShowDuracao] = useState(false);
 
     useEffect(() => {
+        console.log(user_obj.userId);
         const fetchDados = async () => {
             try {
                 const resposta = await fetch("http://3.142.149.185:8080/api/medications");
@@ -245,7 +251,7 @@ export function CalculatorCard(props) {
         const totalDose = numericDose * (24 / freqNumber) * totalDays;
 
         const body = {
-            userId: "1b9d1712-48a6-4a18-80fa-096d5fd2aaff",
+            userId: user_obj.userId,
             patientName: nome,
             items: [
                 {

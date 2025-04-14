@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { RecentItem } from "./RecentItem.jsx";
+import AuthContext from "../context/AuthContext.jsx";
 import "../styles/RecentCard.css";
 
 export function RecentCard() {
+  const { user } = useContext(AuthContext);
+  const user_obj = JSON.parse(user);
+  const userId = user_obj.userId;
+
   const [items, setItems] = useState([]);
 
   const formatDate = (dateString) => {
@@ -37,7 +42,8 @@ export function RecentCard() {
           time: formatTime(prescription.creationDate),
           medications: prescription.prescriptionMedications,
           patientName: prescription.patientName,
-          timestamp: new Date(prescription.creationDate).getTime()
+          timestamp: new Date(prescription.creationDate).getTime(),
+          userId: prescription.user.userId
         }));
 
         const calculos = JSON.parse(localStorage.getItem('calculos') || '[]');
@@ -65,7 +71,7 @@ export function RecentCard() {
     <div className="recent-card">
       <h2 className="recent-card-title">Recentes</h2>
       <div className="recent-items-container">
-        {items.map((item, index) => (
+        {items.filter(item => item.userId === userId).map((item, index) => (
           <RecentItem
             key={index}
             type={item.type}

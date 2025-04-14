@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
+import AuthContext from "../context/AuthContext.jsx";
 import { RecentItem } from "./RecentItem.jsx";
 import "../styles/RecentCard.css";
 
 export function ReceitasCard() {
+  const { user } = useContext(AuthContext);
+  const user_obj = JSON.parse(user);
+  const userId = user_obj.userId;
+
   const navigate = useNavigate();
 
   const formatDate = (creationDate) => {
@@ -49,7 +53,7 @@ export function ReceitasCard() {
     <div className="recent-card">
       <h2 className="recent-card-title">Recentes</h2>
       <div className="recent-items-container">
-        {prescriptions.reverse().map((prescription, index) => (
+        {prescriptions.filter(item => item.user.userId === userId).reverse().map((prescription, index) => (
           <RecentItem
             key={prescription.prescriptionId}
             type="receita"

@@ -11,13 +11,11 @@ const Perfil = () => {
 
     const user_obj = JSON.parse(user);
 
-    console.log(user_obj);
-
     useEffect(() => {
         const fetchForm = async () => {
             try {
                 localStorage.removeItem("formData");
-                const response = await fetch(`http://localhost:8080/api/users/${'344fe775-edcf-4be1-be3c-a34460d928db'}`, {
+                const response = await fetch(`http://3.142.149.185:8080/api/users/${user_obj.userId}`, {
                     method: 'GET',
                     mode: "cors",
                     headers: {
