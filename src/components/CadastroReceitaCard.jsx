@@ -35,7 +35,7 @@ export function CadastroReceitaCard() {
   useEffect(() => {
     async function fetchMedications() {
       try {
-        const response = await fetch("3.142.149.185:8080/api/medications");
+        const response = await fetch("http://3.142.149.185:8080/api/medications");
         const data = await response.json();
         console.log("Medicamentos retornados:", data);
         setMedications(data);
@@ -146,7 +146,7 @@ export function CadastroReceitaCard() {
     console.log("Enviando payload:", JSON.stringify(payload, null, 2));
 
     try {
-      const response = await fetch("3.142.149.185:8080/api/prescriptions", {
+      const response = await fetch("http://3.142.149.185:8080/api/prescriptions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

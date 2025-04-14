@@ -30,7 +30,7 @@ export function ReceitasCard() {
   useEffect(() => {
     const fetchDados = async () => {
       try {
-        const resposta = await fetch("3.142.149.185:8080/api/prescriptions");
+        const resposta = await fetch("http://3.142.149.185:8080/api/prescriptions");
         if (!resposta.ok) throw new Error("Erro ao buscar os dados");
         const json = await resposta.json();
         setPrescriptions(json);

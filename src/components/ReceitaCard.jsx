@@ -30,7 +30,7 @@ export function ReceitaCard() {
     setIsLoading(true);
     try {
       const resposta = await fetch(
-        `3.142.149.185:8080/api/prescriptions/${prescriptionId}`
+        `http://3.142.149.185:8080/api/prescriptions/${prescriptionId}`
       );
       if (!resposta.ok) throw new Error("Erro ao buscar os dados");
       const data = await resposta.json();
@@ -188,7 +188,7 @@ export function ReceitaCard() {
       };
 
       const response = await fetch(
-        `3.142.149.185:8080/api/prescriptions/${prescriptionToSave.prescriptionId}`,
+        `http://3.142.149.185:8080/api/prescriptions/${prescriptionToSave.prescriptionId}`,
         {
           method: "PUT",
           headers: {

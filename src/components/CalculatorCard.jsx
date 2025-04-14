@@ -17,7 +17,7 @@ export function CalculatorCard(props) {
     useEffect(() => {
         const fetchDados = async () => {
             try {
-                const resposta = await fetch("3.142.149.185:8080/api/medications");
+                const resposta = await fetch("http://3.142.149.185:8080/api/medications");
                 if (!resposta.ok) throw new Error("Erro ao buscar os dados");
                 const json = await resposta.json();
                 setMedicamentos(json);
@@ -173,7 +173,7 @@ export function CalculatorCard(props) {
             interval: values.intervalo ? Number(values.intervalo) : null
         };
         try {
-            const response = await fetch("3.142.149.185:8080/api/dose-calculation", {
+            const response = await fetch("http://3.142.149.185:8080/api/dose-calculation", {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
@@ -260,7 +260,7 @@ export function CalculatorCard(props) {
         };
 
         try {
-            const response = await fetch("3.142.149.185:8080/api/prescriptions", {
+            const response = await fetch("http://3.142.149.185:8080/api/prescriptions", {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
