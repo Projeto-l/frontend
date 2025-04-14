@@ -4,13 +4,14 @@ import MedicamentoDetalhado from "./MedicamentoDetalhado";
 import {
   AlertTriangle,
   ChevronDown,
-  Plus,
+  Repeat,
   Printer,
   Save,
   Trash2,
   User,
   FileText,
   ExternalLink,
+  Pill,
 } from "lucide-react";
 import "../styles/ReceitaCard.css";
 
@@ -310,16 +311,46 @@ export function ReceitaCard() {
 
             {interactions.length > 0 && (
               <div className="alerta-container">
-                {interactions.map((interaction, index) => (
-                  <div key={index} className="alerta-item">
-                    <div className="alerta-icone">
-                      <AlertTriangle className="icon-alerta" />
+                {interactions.map((interaction, index) => {
+                  const alternatives =
+                    interaction.medicationsAlternatives.split(" e ");
+
+                  return (
+                    <div key={index} className="alerta-item">
+                      <div className="alerta-icone">
+                        <AlertTriangle className="icon-alerta" />
+                      </div>
+                      <div className="alerta-conteudo">
+                        <div className="medication-pair">
+                          <span className="medication-name">
+                            {interaction.medication1Name}
+                          </span>
+                          <span className="plus-sign">+</span>
+                          <span className="medication-name">
+                            {interaction.medication2Name}
+                          </span>
+                        </div>
+                        <div className="alerta-mensagem">
+                          {interaction.description}
+                        </div>
+                        <div className="alerta-alternatives">
+                          <div className="alerta-alternatives-title">
+                            <Repeat className="swap-icon" /> Alternativas
+                            recomendadas:
+                          </div>
+                          <div className="alternatives-list">
+                            {alternatives.map((alt, i) => (
+                              <div key={i} className="alternative-badge">
+                                <Pill className="pill-icon" />
+                                {alt.trim()}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="alerta-mensagem">
-                      {interaction.description}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 

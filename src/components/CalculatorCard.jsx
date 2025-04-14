@@ -356,7 +356,7 @@ export function CalculatorCard(props) {
           )}
           {medicamentoSelecionado && (
             <>
-              <label htmlFor="">apresentacao</label>
+              <label htmlFor="">Apresentação</label>
               <div className="select-apresentacao-fav">
                 <select onChange={handleApresentacaoChange} defaultValue="">
                   <option value="" disabled>
