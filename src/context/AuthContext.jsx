@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
 
   const isTokenExpired = (token) => {
     try {
-      const payload = JSON.parse(window.atob(token.split('.')[1]));
+      const payload = JSON.parse(window.atob(token.split(".")[1]));
       const expirationTime = payload.exp * 1000; // Converter para milissegundos
       return Date.now() >= expirationTime;
     } catch {
@@ -21,24 +21,24 @@ export const AuthProvider = ({ children }) => {
       logout();
       return;
     }
-    localStorage.setItem('authToken', token);
-    const user = window.atob(token.split('.')[1]);
+    localStorage.setItem("authToken", token);
+    const user = window.atob(token.split(".")[1]);
     setUser(user);
   };
 
   const logout = () => {
-    localStorage.removeItem('formData');
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("formData");
+    localStorage.removeItem("authToken");
     setUser(null);
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     if (token) {
       if (isTokenExpired(token)) {
         logout();
       } else {
-        const user = window.atob(token.split('.')[1]);
+        const user = window.atob(token.split(".")[1]);
         setUser(user);
       }
     }
@@ -46,7 +46,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading, isTokenExpired }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, loading, isTokenExpired }}
+    >
       {children}
     </AuthContext.Provider>
   );

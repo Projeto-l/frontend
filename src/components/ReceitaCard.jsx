@@ -25,8 +25,11 @@ export function ReceitaCard() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRemoving, setIsRemoving] = useState(false);
+  const [prescriptionDeleted, setPrescriptionDeleted] = useState(false);
 
   const fetchPrescription = async () => {
+    if (prescriptionDeleted) return;
+
     setIsLoading(true);
     try {
       const resposta = await fetch(
@@ -49,7 +52,7 @@ export function ReceitaCard() {
       setIsLoading(false);
     }
   };
-  
+
   useEffect(() => {
     if (chrome) {
       chrome.storage.local.get(["isEditing"]).then((result) => {
@@ -63,10 +66,10 @@ export function ReceitaCard() {
   }, [prescription, navigate]);
 
   useEffect(() => {
-    if (prescriptionId) {
+    if (prescriptionId && !prescriptionDeleted) {
       fetchPrescription();
     }
-  }, [prescriptionId]);
+  }, [prescriptionId, prescriptionDeleted]);
 
   const toggleMedicamento = (id) => {
     if (medicamentoExpandido === id) {
@@ -82,17 +85,29 @@ export function ReceitaCard() {
     try {
       setIsRemoving(true);
 
+      const updatedMedications = prescription.prescriptionMedications.filter(
+        (m) => m.medication.medicationId !== id
+      );
+
       const updatedPrescription = {
         ...prescription,
-        prescriptionMedications: prescription.prescriptionMedications.filter(
-          (m) => m.medication.medicationId !== id
-        ),
+        prescriptionMedications: updatedMedications,
       };
 
       setPrescription(updatedPrescription);
 
       if (medicamentoExpandido === id) {
         setMedicamentoExpandido(null);
+      }
+
+      if (updatedMedications.length === 0) {
+        await salvarReceita(updatedPrescription);
+
+        setPrescriptionDeleted(true);
+
+        console.log("Receita excluída com sucesso!");
+        navigate("/receitas");
+        return;
       }
 
       await salvarReceita(updatedPrescription);
@@ -204,7 +219,9 @@ export function ReceitaCard() {
 
       const updatedData = await response.json();
 
-      await fetchPrescription();
+      if (!prescriptionDeleted) {
+        await fetchPrescription();
+      }
     } catch (error) {
       console.error("Erro ao salvar a receita:", error);
       alert(`Erro ao salvar a receita: ${error.message}`);
@@ -341,12 +358,14 @@ export function ReceitaCard() {
               )}
 
             <div className="acoes-container">
-              <button 
+              <button
                 className="acao-botao"
                 onClick={() => {
-                  chrome.storage.local.set({ prescription: prescription }).then(() => {
-                    chrome.runtime.sendMessage({ action: "openEditTab" });
-                  });
+                  chrome.storage.local
+                    .set({ prescription: prescription })
+                    .then(() => {
+                      chrome.runtime.sendMessage({ action: "openEditTab" });
+                    });
                 }}
               >
                 <Printer className="icon-acao" />

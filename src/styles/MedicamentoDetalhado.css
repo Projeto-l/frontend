@@ -35,6 +35,37 @@
   font-size: 0.8rem;
 }
 
+.value-container {
+  display: inline-flex;
+  align-items: center;
+}
+
+.value-text {
+  color: #7b7979;
+  font-size: 0.8rem;
+}
+
+.unit-label {
+  color: #7b7979;
+  font-size: 0.8rem;
+  margin-left: 3px;
+}
+
+.input-with-unit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.input-unit {
+  position: absolute;
+  right: 8px;
+  color: #7b7979;
+  font-size: 0.75rem;
+  pointer-events: none;
+}
+
 .detalhe-input {
   width: 100%;
   background-color: #f3f4f6;
@@ -45,6 +76,7 @@
   color: #7b7979;
   outline: none;
   height: 1.5rem;
+  padding-right: 40px;
 }
 
 .detalhe-acoes {
