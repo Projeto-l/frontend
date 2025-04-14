@@ -100,7 +100,7 @@ const Login = () => {
     let password = formEntries.values.senha;
 
     try {
-      const url = "http://localhost:8080/api/v1/auth";
+      const url = "http://3.142.149.185:8080/api/v1/auth";
       const response = await fetch(url, {
         method: 'POST',
         headers: {
