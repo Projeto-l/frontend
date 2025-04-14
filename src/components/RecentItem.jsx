@@ -46,7 +46,7 @@ export function RecentItem({
 
       {medications.map((medication, index) => (
         <React.Fragment key={index}>
-          <div className="medication-name">{medication.medication.name}</div>
+          <div className="medication-name-titulo">{medication.medication.name}</div>
 
           {medication.details && (
             <div className="medication-details">

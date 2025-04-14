@@ -284,3 +284,107 @@ body {
   align-items: center;
   gap: 0.25rem;
 }
+
+.alerta-alternatives {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed #e5e7eb;
+}
+
+.alerta-alternatives-title {
+  font-size: 0.9rem;
+  color: #1e3a6e;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.alternatives-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.alternative-badge {
+  background-color: #e6eeff;
+  color: #1e3a6e;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid #c7d5f0;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pill-icon {
+  color: #1e3a6e;
+  height: 0.9rem;
+  width: 0.9rem;
+}
+
+.swap-icon {
+  color: #1e3a6e;
+  height: 1rem;
+  width: 1rem;
+}
+
+.medication-pair {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.medication-name {
+  font-weight: 300;
+  color: #1e3a6e;
+  background-color: #edf2ff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #d1e0ff;
+  font-size: 0.85rem;
+}
+
+.plus-sign {
+  color: #9ca3af;
+}
+
+.acao-botao:disabled {
+  background-color: #a3b8d9;
+  cursor: not-allowed;
+}
+.medicamento-item {
+  display: flex;
+  align-items: center;
+  background-color: #d8d8d8;
+  border-radius: 0.3rem;
+  flex-grow: 1;
+  border: none;
+}
+
+.medicamento-nome {
+  color: #1e3a6e;
+  font-size: 16px;
+}
+
+.acao-botao {
+  background-color: #152c54;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.3rem;
+  display: flex;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+}
+
+.icon {
+  height: 1.25rem;
+  width: 1.25rem;
+  color: #1e3a6e;
+}
